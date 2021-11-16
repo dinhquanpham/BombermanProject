@@ -1,9 +1,7 @@
 package Entities;
 
-import Graphics.Sprites;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
+import Graphics.Sprites;
 
 public abstract class Entities {
     protected int x;

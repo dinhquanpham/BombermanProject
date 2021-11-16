@@ -1,11 +1,10 @@
 package Entities;
 
 import Graphics.Sprites;
+import Main.GameBomberMan;
 
 import static Graphics.Sprites.*;
-
 import java.awt.*;
-
 import static Graphics.TextMap.*;
 
 public class Bomb extends Entities {
@@ -15,11 +14,11 @@ public class Bomb extends Entities {
             bomb_1,
             bomb_2
     };
-    private int plantedTime, explodedTime = 3000;
-    private int indexAnimationBomb = 0;
+    public int plantedTime, explodedTime = 3000;
+    public int indexAnimationBomb = 0;
 
     public Bomb(int x, int y, Sprites sprite) {
-        super(x,y,sprite);
+        super(x, y, sprite);
     }
 
     public boolean isExplored() {
@@ -52,8 +51,8 @@ public class Bomb extends Entities {
                 Sprites.DEFAULT_SIZE * 3,null);
     }
 
-    public void explode(Bomb bomb) {
-        int existTime = (int) System.currentTimeMillis() - bomb.getPlantedTime();
+    public void explode(GameBomberMan myGame) {
+        int existTime = (int) System.currentTimeMillis() - plantedTime;
         int cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
             indexAnimationBomb = cycle % 3;
@@ -61,8 +60,15 @@ public class Bomb extends Entities {
         else {
             indexAnimationBomb = 2 - cycle % 3;
         }
-        bomb.setCurrentSprite(bombAnimation[indexAnimationBomb]);
-        if (existTime > bomb.explodedTime) {
+        currentSprite = bombAnimation[indexAnimationBomb];
+        boolean xOverlaps = (x < myGame.player.getX() + 48) && (x + 48 > myGame.player.getX());
+        boolean yOverlaps = (y < myGame.player.getY() + 48) && (y + 48 > myGame.player.getY());
+        System.out.println(x + " " + myGame.player.getX() + " " + y + " " + myGame.player.getY());
+        if (!(xOverlaps && yOverlaps)) {
+            map1[y / 48][x / 48] = 3;
+        }
+
+        if (existTime > explodedTime) {
             map1[y / 48][x / 48] = 0;
             explored = true;
         }

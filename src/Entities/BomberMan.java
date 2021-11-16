@@ -1,13 +1,9 @@
 package Entities;
 
-import Graphics.Sprites;
-
-import static Graphics.Sprites.*;
-
 import java.awt.*;
-
+import Graphics.Sprites;
+import static Graphics.Sprites.*;
 import static Graphics.TextMap.*;
-
 import Main.GameBomberMan;
 
 
@@ -118,10 +114,10 @@ public class BomberMan extends Entities {
         int trueNextY_3 = (nextY + 48 - 1) / 48;
         int trueNextX_4 = (nextX + 48 - 1) / 48;
         int trueNextY_4 = (nextY + 48 - 1) / 48;
-        return !(map1[trueNextY_1][trueNextX_1] == 1 || map1[trueNextY_1][trueNextX_1] == 2 ||
-                map1[trueNextY_2][trueNextX_2] == 1 || map1[trueNextY_2][trueNextX_2] == 2 ||
-                map1[trueNextY_3][trueNextX_3] == 1 || map1[trueNextY_3][trueNextX_3] == 2 ||
-                map1[trueNextY_4][trueNextX_4] == 1 || map1[trueNextY_4][trueNextX_4] == 2);
+        return !(map1[trueNextY_1][trueNextX_1] == 1 || map1[trueNextY_1][trueNextX_1] == 2 || map1[trueNextY_1][trueNextX_1] == 3 ||
+                map1[trueNextY_2][trueNextX_2] == 1 || map1[trueNextY_2][trueNextX_2] == 2 || map1[trueNextY_2][trueNextX_2] == 3 ||
+                map1[trueNextY_3][trueNextX_3] == 1 || map1[trueNextY_3][trueNextX_3] == 2 || map1[trueNextY_3][trueNextX_3] == 3 ||
+                map1[trueNextY_4][trueNextX_4] == 1 || map1[trueNextY_4][trueNextX_4] == 2 || map1[trueNextY_4][trueNextX_4] == 3);
     }
 
     public void move(GameBomberMan game) {

@@ -1,8 +1,7 @@
 package Entities;
 
-import Graphics.Sprites;
-
 import java.awt.*;
+import Graphics.Sprites;
 
 public class Wall extends Entities {
     public Wall (int x, int y, Sprites sprite) {

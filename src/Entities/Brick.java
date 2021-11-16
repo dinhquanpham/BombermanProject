@@ -1,8 +1,8 @@
 package Entities;
 
+import java.awt.*;
 import Graphics.Sprites;
 
-import java.awt.*;
 
 public class Brick extends Entities {
 

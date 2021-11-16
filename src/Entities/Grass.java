@@ -1,8 +1,7 @@
 package Entities;
 
-import Graphics.Sprites;
-
 import java.awt.*;
+import Graphics.Sprites;
 
 public class Grass extends Entities{
     public Grass (int x, int y, Sprites sprite) {

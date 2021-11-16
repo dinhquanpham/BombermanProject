@@ -1,14 +1,12 @@
 package Main;
 
 import Entities.*;
-
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-
 import static Graphics.Sprites.*;
-import static Graphics.TextMap.map1;
+import static Graphics.TextMap.*;
 
 public class GameBomberMan extends JPanel implements KeyListener {
     public static final int R = 15;
@@ -79,7 +77,7 @@ public class GameBomberMan extends JPanel implements KeyListener {
                 bombY *= 48;
                 currentBomb = new Bomb(bombX, bombY, bomb);
                 currentBomb.setPlantedTime((int)System.currentTimeMillis());
-                map1[bombY / 48][bombX / 48] = 3;
+                //map1[bombY / 48][bombX / 48] = 3;
             }
         }
     }
@@ -119,10 +117,11 @@ public class GameBomberMan extends JPanel implements KeyListener {
             myGame.createMap();
             myGame.player.move(myGame);
             if (myGame.currentBomb != null) {
-                myGame.currentBomb.explode(myGame.currentBomb);
+                myGame.currentBomb.explode(myGame);
                 if (myGame.currentBomb.isExplored()) myGame.currentBomb = null;
             }
             myGame.draw();
+            System.out.println(myGame.player.getX() + " " + myGame.player.getY());
         }
     }
 }
