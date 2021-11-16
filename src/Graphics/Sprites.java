@@ -104,6 +104,51 @@ public class Sprites {
 
     public static Sprites balloom_dead = new Sprites("Data\\Sprites\\portal.png",16,16);
 
+
+    /*
+	|--------------------------------------------------------------------------
+	| Bomb Sprites
+	|--------------------------------------------------------------------------
+	 */
+    public static Sprites bomb = new Sprites("Data\\Sprites\\bomb.png", 16, 16);
+    public static Sprites bomb_1 = new Sprites("Data\\Sprites\\bomb_1.png", 16, 16);
+    public static Sprites bomb_2 = new Sprites("Data\\Sprites\\bomb_2.png", 16, 16);
+
+    /*
+    |--------------------------------------------------------------------------
+    | FlameSegment Sprites
+    |--------------------------------------------------------------------------
+     */
+    public static Sprites bomb_exploded = new Sprites("Data\\Sprites\\bomb_exploded.png", 16, 16);
+    public static Sprites bomb_exploded1 = new Sprites("Data\\Sprites\\bomb_exploded1.png", 16, 16);
+    public static Sprites bomb_exploded2 = new Sprites("Data\\Sprites\\bomb_exploded2.png", 16, 16);
+
+    public static Sprites explosion_vertical = new Sprites("Data\\Sprites\\explosion_vertical.png", 16, 16);
+    public static Sprites explosion_vertical1 = new Sprites("Data\\Sprites\\explosion_vertical1.png", 16, 16);
+    public static Sprites explosion_vertical2 = new Sprites("Data\\Sprites\\explosion_vertical2.png", 16, 16);
+
+    public static Sprites explosion_horizontal = new Sprites("Data\\Sprites\\explosion_horizontal.png", 16, 16);
+    public static Sprites explosion_horizontal1 = new Sprites("Data\\Sprites\\explosion_horizontal1.png", 16, 16);
+    public static Sprites explosion_horizontal2 = new Sprites("Data\\Sprites\\explosion_horizontal2.png", 16, 16);
+
+    public static Sprites explosion_horizontal_left_last = new Sprites("Data\\Sprites\\explosion_horizontal_left_last.png", 16, 16);
+    public static Sprites explosion_horizontal_left_last1 = new Sprites("Data\\Sprites\\explosion_horizontal_left_last1.png", 16, 16);
+    public static Sprites explosion_horizontal_left_last2 = new Sprites("Data\\Sprites\\explosion_horizontal_left_last2.png", 16, 16);
+
+    public static Sprites explosion_horizontal_right_last = new Sprites("Data\\Sprites\\explosion_horizontal_right_last.png", 16, 16);
+    public static Sprites explosion_horizontal_right_last1 = new Sprites("Data\\Sprites\\explosion_horizontal_right_last1.png", 16, 16);
+    public static Sprites explosion_horizontal_right_last2 = new Sprites("Data\\Sprites\\explosion_horizontal_right_last2.png", 16, 16);
+
+    public static Sprites explosion_vertical_top_last = new Sprites("Data\\Sprites\\explosion_vertical_top_last.png", 16, 16);
+    public static Sprites explosion_vertical_top_last1 = new Sprites("Data\\Sprites\\explosion_vertical_top_last1.png", 16, 16);
+    public static Sprites explosion_vertical_top_last2 = new Sprites("Data\\Sprites\\explosion_vertical_top_last2.png", 16, 16);
+
+    public static Sprites explosion_vertical_down_last = new Sprites("Data\\Sprites\\explosion_vertical_down_last.png", 16, 16);
+    public static Sprites explosion_vertical_down_last1 = new Sprites("Data\\Sprites\\explosion_vertical_down_last1.png", 16, 16);
+    public static Sprites explosion_vertical_down_last2 = new Sprites("Data\\Sprites\\explosion_vertical_down_last2.png", 16, 16);
+
+	/*
+
     /*
     |--------------------------------------------------------------------------
     | playerAnimation
@@ -114,4 +159,12 @@ public class Sprites {
     public static Sprites[] playerAnimationRight = {player_right, player_right_1,player_right_2};
     public static Sprites[] playerAnimationUp = {player_up, player_up_1, player_up_2};
     public static Sprites[] playerAnimationDown = {player_down, player_down_1,player_down_2};
+
+    /*
+    |--------------------------------------------------------------------------
+    | bombAnimation
+    |--------------------------------------------------------------------------
+     */
+
+    public static Sprites[] bombAnimation = {bomb, bomb_1, bomb_2};
 }
