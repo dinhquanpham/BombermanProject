@@ -73,9 +73,13 @@ public class GameBomberMan extends JPanel implements KeyListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             if (currentBomb == null) {
-                currentBomb = new Bomb(player.getX(),player.getY(),bomb);
+                int bombX = (player.getX() + 24) / 48;
+                int bombY = (player.getY() + 24) / 48;
+                bombX *= 48;
+                bombY *= 48;
+                currentBomb = new Bomb(bombX, bombY, bomb);
                 currentBomb.setPlantedTime((int)System.currentTimeMillis());
-                map1[currentBomb.getY() / 48][currentBomb.getX() / 48] = 3;
+                map1[bombY / 48][bombX / 48] = 3;
             }
         }
     }

@@ -1,7 +1,5 @@
 package Graphics;
 
-import com.sun.istack.internal.localization.NullLocalizable;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -146,25 +144,4 @@ public class Sprites {
     public static Sprites explosion_vertical_down_last = new Sprites("Data\\Sprites\\explosion_vertical_down_last.png", 16, 16);
     public static Sprites explosion_vertical_down_last1 = new Sprites("Data\\Sprites\\explosion_vertical_down_last1.png", 16, 16);
     public static Sprites explosion_vertical_down_last2 = new Sprites("Data\\Sprites\\explosion_vertical_down_last2.png", 16, 16);
-
-	/*
-
-    /*
-    |--------------------------------------------------------------------------
-    | playerAnimation
-    |--------------------------------------------------------------------------
-     */
-
-    public static Sprites[] playerAnimationLeft = {player_left, player_left_1,player_left_2};
-    public static Sprites[] playerAnimationRight = {player_right, player_right_1,player_right_2};
-    public static Sprites[] playerAnimationUp = {player_up, player_up_1, player_up_2};
-    public static Sprites[] playerAnimationDown = {player_down, player_down_1,player_down_2};
-
-    /*
-    |--------------------------------------------------------------------------
-    | bombAnimation
-    |--------------------------------------------------------------------------
-     */
-
-    public static Sprites[] bombAnimation = {bomb, bomb_1, bomb_2};
 }
