@@ -118,10 +118,14 @@ public class GameBomberMan extends JPanel implements KeyListener {
             myGame.player.move(myGame);
             if (myGame.currentBomb != null) {
                 myGame.currentBomb.explode(myGame);
-                if (myGame.currentBomb.isExplored()) myGame.currentBomb = null;
+                if (myGame.currentBomb.isExploded()) {
+                    myGame.currentBomb.handleFlames(myGame);
+                    if (myGame.currentBomb.isEndFlames()) {
+                        myGame.currentBomb = null;
+                    }
+                }
             }
             myGame.draw();
-            System.out.println(myGame.player.getX() + " " + myGame.player.getY());
         }
     }
 }
