@@ -9,7 +9,10 @@ import Main.GameBomberMan;
 
 public class BomberMan extends Entities {
     private boolean right, left, up, down, moving;
-    private int indexAnimationPlayer = 0, framePlayer = 0, intervalPlayer = 10, playerSpeed = 1;
+    private int indexAnimationPlayer = 0;
+    private int framePlayer = 0;
+    private int intervalPlayer = 10;
+    private int playerSpeed = 1;
     public static Sprites[] playerAnimationLeft = {
             player_left,
             player_left_1,
@@ -101,19 +104,19 @@ public class BomberMan extends Entities {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE * 3,
-                Sprites.DEFAULT_SIZE * 3, null);
+        g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
+                Sprites.DEFAULT_SIZE, null);
     }
 
     public boolean isFreeToMove(int nextX, int nextY) {
-        int trueNextX_1 = nextX / 48;
-        int trueNextY_1 = nextY / 48;
-        int trueNextX_2 = (nextX + 48 - 1) / 48;
-        int trueNextY_2 = nextY / 48;
-        int trueNextX_3 = nextX / 48;
-        int trueNextY_3 = (nextY + 48 - 1) / 48;
-        int trueNextX_4 = (nextX + 48 - 1) / 48;
-        int trueNextY_4 = (nextY + 48 - 1) / 48;
+        int trueNextX_1 = nextX / DEFAULT_SIZE;
+        int trueNextY_1 = nextY / DEFAULT_SIZE;
+        int trueNextX_2 = (nextX + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
+        int trueNextY_2 = nextY / DEFAULT_SIZE;
+        int trueNextX_3 = nextX / DEFAULT_SIZE;
+        int trueNextY_3 = (nextY + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
+        int trueNextX_4 = (nextX + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
+        int trueNextY_4 = (nextY + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
         return !(map1[trueNextY_1][trueNextX_1] == 1 || map1[trueNextY_1][trueNextX_1] == 2 || map1[trueNextY_1][trueNextX_1] == 3 ||
                 map1[trueNextY_2][trueNextX_2] == 1 || map1[trueNextY_2][trueNextX_2] == 2 || map1[trueNextY_2][trueNextX_2] == 3 ||
                 map1[trueNextY_3][trueNextX_3] == 1 || map1[trueNextY_3][trueNextX_3] == 2 || map1[trueNextY_3][trueNextX_3] == 3 ||
@@ -123,25 +126,25 @@ public class BomberMan extends Entities {
     public void move(GameBomberMan game) {
         moving = false;
         if (right) {
-            if (x <= game.windowWidth - 48 * 3 + 24 && isFreeToMove(x + playerSpeed, y)) {
+            if (x <= GameBomberMan.windowWidth - DEFAULT_SIZE * 3 + 24 && isFreeToMove(x + playerSpeed, y)) {
                 x += playerSpeed;
                 moving = true;
             }
         }
         if (left) {
-            if (x >= 48 && isFreeToMove(x - playerSpeed, y)) {
+            if (x >= DEFAULT_SIZE && isFreeToMove(x - playerSpeed, y)) {
                 x -= playerSpeed;
                 moving = true;
             }
         }
         if (down) {
-            if (y <= game.windowHeight - 48 * 3 && isFreeToMove(x, y + playerSpeed)) {
+            if (y <= GameBomberMan.windowHeight - DEFAULT_SIZE * 3 && isFreeToMove(x, y + playerSpeed)) {
                 y += playerSpeed;
                 moving = true;
             }
         }
         if (up) {
-            if (y >= 48 && isFreeToMove(x, y - playerSpeed)) {
+            if (y >= DEFAULT_SIZE && isFreeToMove(x, y - playerSpeed)) {
                 y -= playerSpeed;
                 moving = true;
             }

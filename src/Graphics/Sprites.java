@@ -7,7 +7,7 @@ import java.io.IOException;
 
 
 public class Sprites {
-    public static final int DEFAULT_SIZE = 16;
+    public static final int DEFAULT_SIZE = 48;
     protected int width;
     protected int height;
     private BufferedImage image;

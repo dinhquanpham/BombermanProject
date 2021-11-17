@@ -4,7 +4,9 @@ import Graphics.Sprites;
 import Main.GameBomberMan;
 
 import static Graphics.Sprites.*;
+
 import java.awt.*;
+
 import static Graphics.TextMap.*;
 
 public class Bomb extends Entities {
@@ -16,8 +18,7 @@ public class Bomb extends Entities {
     private int explodedTime;
     private final int explodedTiming = 300;
     private int indexAnimationFlames = 0;
-    private int sizeFlames = 2;
-    
+    private int sizeFlames = 4;
     public static Sprites[] bombAnimation = {
             bomb,
             bomb_1,
@@ -38,30 +39,30 @@ public class Bomb extends Entities {
             explosion_horizontal1,
             explosion_horizontal2
     };
-    public static Sprites[] flamesAnimationLeft= {
+    public static Sprites[] flamesAnimationLeft = {
             explosion_horizontal_left_last,
             explosion_horizontal_left_last1,
             explosion_horizontal_left_last2
     };
 
-    public static Sprites[] flamesAnimationRight= {
+    public static Sprites[] flamesAnimationRight = {
             explosion_horizontal_right_last,
             explosion_horizontal_right_last1,
             explosion_horizontal_right_last2
     };
 
-    public static Sprites[] flamesAnimationTop= {
+    public static Sprites[] flamesAnimationTop = {
             explosion_vertical_top_last,
             explosion_vertical_top_last1,
             explosion_vertical_top_last2
     };
 
-    public static Sprites[] flamesAnimationDown= {
+    public static Sprites[] flamesAnimationDown = {
             explosion_vertical_down_last,
             explosion_vertical_down_last1,
             explosion_vertical_down_last2
     };
-    
+
     public Bomb(int x, int y, Sprites sprite) {
         super(x, y, sprite);
     }
@@ -92,57 +93,113 @@ public class Bomb extends Entities {
 
     @Override
     public void draw(Graphics g) {
-        if(!exploded) {
-            g.drawImage(currentSprite.getImage(),x ,y,Sprites.DEFAULT_SIZE * 3,
-                    Sprites.DEFAULT_SIZE * 3,null);
+        if (!exploded) {
+            g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
+                    Sprites.DEFAULT_SIZE, null);
         } else {
-            g.drawImage(flamesAnimation[indexAnimationFlames].getImage(), x, y, Sprites.DEFAULT_SIZE * 3,
-                    Sprites.DEFAULT_SIZE * 3, null);
-            for (int i = 1; i < sizeFlames; i++) {
-                g.drawImage(flamesAnimationHorizontal[indexAnimationFlames].getImage(), x - 48 * i,
-                        y, Sprites.DEFAULT_SIZE * 3, Sprites.DEFAULT_SIZE * 3, null);
-                g.drawImage(flamesAnimationHorizontal[indexAnimationFlames].getImage(), x + 48 * i,
-                        y, Sprites.DEFAULT_SIZE * 3, Sprites.DEFAULT_SIZE * 3, null);
-                g.drawImage(flamesAnimationVertical[indexAnimationFlames].getImage(), x,
-                        y - 48 * i, Sprites.DEFAULT_SIZE * 3, Sprites.DEFAULT_SIZE * 3, null);
-                g.drawImage(flamesAnimationVertical[indexAnimationFlames].getImage(), x,
-                        y + 48 * i, Sprites.DEFAULT_SIZE * 3, Sprites.DEFAULT_SIZE * 3, null);
+            g.drawImage(flamesAnimation[indexAnimationFlames].getImage(), x, y, Sprites.DEFAULT_SIZE,
+                    Sprites.DEFAULT_SIZE, null);
+
+            // LeftExplosion
+            for (int i = 1; i <= sizeFlames; i++) {
+                if (map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i)/ DEFAULT_SIZE] == 0) {
+                    if (i < sizeFlames) {
+                        g.drawImage(flamesAnimationHorizontal[indexAnimationFlames].getImage(), x - DEFAULT_SIZE * i,
+                                y, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
+                    }
+                    else {
+                        g.drawImage(flamesAnimationLeft[indexAnimationFlames].getImage(), x - DEFAULT_SIZE * i,
+                                y, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
+                    }
+                }
+                if (map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2 || map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 1) {
+                    break;
+                }
+            }
+
+            //RightExplosion
+            for (int i = 1; i <= sizeFlames; i++) {
+                if (map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 0) {
+                    if (i < sizeFlames) {
+                        g.drawImage(flamesAnimationHorizontal[indexAnimationFlames].getImage(), x + DEFAULT_SIZE * i,
+                                y, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
+                    }
+                    else {
+                        g.drawImage(flamesAnimationRight[indexAnimationFlames].getImage(), x + DEFAULT_SIZE * i,
+                                y, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
+                    }
+                }
+                if (map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2 || map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 1) {
+                    break;
+                }
+            }
+
+            //TopExplosion
+            for (int i = 1; i <= sizeFlames; i++) {
+                if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 0) {
+                    if (i < sizeFlames) {
+                        g.drawImage(flamesAnimationVertical[indexAnimationFlames].getImage(), x,
+                                y - DEFAULT_SIZE * i, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
+                    }
+                    else  {
+                        g.drawImage(flamesAnimationTop[indexAnimationFlames].getImage(), x,
+                                y - DEFAULT_SIZE * i, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
+                    }
+                }
+                if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2 || map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 1) {
+                    break;
+                }
+            }
+
+            //DownExplosion
+            for (int i = 1; i <= sizeFlames; i++) {
+                if (map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 0) {
+                    if (i < sizeFlames) {
+                        g.drawImage(flamesAnimationVertical[indexAnimationFlames].getImage(), x,
+                                y + DEFAULT_SIZE * i, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
+                    }
+                    else {
+                        g.drawImage(flamesAnimationDown[indexAnimationFlames].getImage(), x,
+                                y + DEFAULT_SIZE * i, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
+                    }
+                }
+                if (map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2 || map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 1) {
+                    break;
+                }
             }
         }
     }
 
     public void explode(GameBomberMan myGame) {
-        if (exploded)return;
+        if (exploded) return;
         int existTime = (int) System.currentTimeMillis() - plantedTime;
         int cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
             indexAnimationBomb = cycle % 3;
-        }
-        else {
+        } else {
             indexAnimationBomb = 2 - cycle % 3;
         }
         currentSprite = bombAnimation[indexAnimationBomb];
-        boolean xOverlaps = (x < myGame.player.getX() + 48) && (x + 48 > myGame.player.getX());
-        boolean yOverlaps = (y < myGame.player.getY() + 48) && (y + 48 > myGame.player.getY());
+        boolean xOverlaps = (x < myGame.player.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > myGame.player.getX());
+        boolean yOverlaps = (y < myGame.player.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > myGame.player.getY());
         if (!(xOverlaps && yOverlaps)) {
-            map1[y / 48][x / 48] = 3;
+            map1[y / DEFAULT_SIZE][x / DEFAULT_SIZE] = 3;
         }
 
         if (existTime > plantedTiming) {
-            map1[y / 48][x / 48] = 0;
+            map1[y / DEFAULT_SIZE][x / DEFAULT_SIZE] = 0;
             exploded = true;
-            explodedTime = ((int)System.currentTimeMillis());
+            explodedTime = ((int) System.currentTimeMillis());
         }
     }
 
     public void handleFlames(GameBomberMan myGame) {
-        if (!exploded)return;
+        if (!exploded) return;
         int existTime = (int) System.currentTimeMillis() - explodedTime;
         int cycle = existTime / 50;
         if ((cycle / 3) % 2 == 0) {
             indexAnimationFlames = cycle % 3;
-        }
-        else {
+        } else {
             indexAnimationFlames = 2 - cycle % 3;
         }
         if (existTime > explodedTiming) {

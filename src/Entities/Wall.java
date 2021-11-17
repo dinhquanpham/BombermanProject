@@ -10,7 +10,7 @@ public class Wall extends Entities {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(currentSprite.getImage(),x ,y,Sprites.DEFAULT_SIZE * 3, Sprites.DEFAULT_SIZE * 3,null);
+        g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
+                Sprites.DEFAULT_SIZE, null);
     }
-
 }
