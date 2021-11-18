@@ -13,4 +13,9 @@ public class Grass extends Entities{
         g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
                 Sprites.DEFAULT_SIZE, null);
     }
+
+    @Override
+    public void collide(Flame flame) {
+        return;
+    }
 }

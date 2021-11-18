@@ -143,4 +143,8 @@ public class Sprites {
     public static Sprites explosion_vertical_down_last = new Sprites("Data\\Sprites\\explosion_vertical_down_last.png", 16, 16);
     public static Sprites explosion_vertical_down_last1 = new Sprites("Data\\Sprites\\explosion_vertical_down_last1.png", 16, 16);
     public static Sprites explosion_vertical_down_last2 = new Sprites("Data\\Sprites\\explosion_vertical_down_last2.png", 16, 16);
+
+    public static Sprites brick_exploded = new Sprites("Data\\Sprites\\brick_exploded.png", 16, 16);
+    public static Sprites brick_exploded1 = new Sprites("Data\\Sprites\\brick_exploded1.png", 16, 16);
+    public static Sprites brick_exploded2 = new Sprites("Data\\Sprites\\brick_exploded2.png", 16, 16);
 }

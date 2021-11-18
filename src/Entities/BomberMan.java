@@ -171,4 +171,9 @@ public class BomberMan extends Entities {
         setX(x);
         setY(y);
     }
+
+    @Override
+    public void collide(Flame flame) {
+        return;
+    }
 }

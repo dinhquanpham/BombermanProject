@@ -24,29 +24,43 @@ public class GameBomberMan extends JPanel implements KeyListener {
 
     //bomb
     Bomb currentBomb;
+    Flame currentFlame;
+    Entities [][] object = new Entities[R][C];
 
+    public void drawMap() {
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                if (map1[i][j] == 1) {
+                    object[i][j] = new Wall(j * 48, i * 48, wall);
+                } else if (map1[i][j] == 0) {
+                    object[i][j] = new Grass(j * 48, i * 48, grass);
+                } else if (map1[i][j] == 2) {
+                    object[i][j] = new Brick(j * 48, i * 48, brick);
+                } else {
+                    object[i][j] = new Grass(j * 48, i * 48, grass);
+                }
+            }
+        }
+    }
     public void draw() {
         this.getGraphics().drawImage(scene, 0, 0, null);
     }
 
-    public void createMap() {
-        int bomCount = 0;
+    public void update() {
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
-                Entities object;
-                if (map1[i][j] == 1) {
-                    object = new Wall(j * 48, i * 48, wall);
-                } else if (map1[i][j] == 0) {
-                    object = new Grass(j * 48, i * 48, grass);
-                } else if (map1[i][j] == 2) {
-                    object = new Brick(j * 48, i * 48, brick);
-                } else {
-                    object = new Grass(j * 48, i * 48, grass);
+                if (currentFlame != null) {
+                    object[i][j].collide(currentFlame);
                 }
-                object.draw(scene.getGraphics());
+                object[i][j].draw(scene.getGraphics());
             }
         }
         if (currentBomb != null) currentBomb.draw(scene.getGraphics());
+        if (currentFlame != null) {
+            if (currentFlame.isFlaming()) {
+                currentFlame.draw(scene.getGraphics());
+            }
+        }
         player.draw(scene.getGraphics());
     }
 
@@ -77,6 +91,7 @@ public class GameBomberMan extends JPanel implements KeyListener {
                 bombY *= DEFAULT_SIZE;
                 currentBomb = new Bomb(bombX, bombY, bomb);
                 currentBomb.setPlantedTime((int)System.currentTimeMillis());
+                currentFlame = new Flame(bombX, bombY, bomb_exploded);
             }
         }
     }
@@ -103,7 +118,7 @@ public class GameBomberMan extends JPanel implements KeyListener {
         frame.setTitle("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setLocation(150, 50);
+        frame.setLocation(25, 50);
         frame.setSize(windowWidth, windowHeight);
         GameBomberMan myGame = new GameBomberMan();
         frame.setFocusable(true);
@@ -111,17 +126,25 @@ public class GameBomberMan extends JPanel implements KeyListener {
         frame.addKeyListener(myGame);
         frame.add(myGame);
         frame.setVisible(true);
-
+        myGame.drawMap();
         while (true) {
-            myGame.createMap();
+            myGame.update();
             myGame.player.move(myGame);
             if (myGame.currentBomb != null) {
                 myGame.currentBomb.explode(myGame);
                 if (myGame.currentBomb.isExploded()) {
-                    myGame.currentBomb.handleFlames(myGame);
-                    if (myGame.currentBomb.isEndFlames()) {
-                        myGame.currentBomb = null;
-                    }
+                    myGame.currentFlame.setExplodedTime((int) System.currentTimeMillis());
+                    myGame.currentFlame.setFlaming(true);
+                    myGame.currentFlame.check();
+                    myGame.currentBomb = null;
+                }
+            }
+            if (myGame.currentFlame != null) {
+                if(myGame.currentFlame.isFlaming()) {
+                    myGame.currentFlame.handleFlame();
+                }
+                if (myGame.currentFlame.isEndFlame()) {
+                    myGame.currentFlame = null;
                 }
             }
             myGame.draw();
