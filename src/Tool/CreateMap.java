@@ -29,7 +29,7 @@ public class CreateMap extends JPanel implements MouseListener {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
-    int indexMateria = 0;
+    int indexMateria = 1;
 
     public void createMap() {
         for (int i = 0; i < R; i++) {
@@ -52,7 +52,7 @@ public class CreateMap extends JPanel implements MouseListener {
     }
 
     public void printMap() {
-        System.out.println("--------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------");
         for (int i = 0; i < R; i++) {
             System.out.print("{");
             for (int j = 0; j < C; j++) {
@@ -61,7 +61,7 @@ public class CreateMap extends JPanel implements MouseListener {
             }
             System.out.println("}");
         }
-        System.out.println("--------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------");
     }
 
     @Override
@@ -78,6 +78,7 @@ public class CreateMap extends JPanel implements MouseListener {
         else if (y == 0 && x == 2) indexMateria = 2;
         else if (y == 14 && x == 30) printMap();
         else if (e.getButton() == MouseEvent.BUTTON3) exampleMap[y][x] = 0;
+        else if (e.getButton() == MouseEvent.BUTTON2) exampleMap[y][x] = 2;
         else exampleMap[y][x] = indexMateria;
     }
 
