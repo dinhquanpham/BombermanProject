@@ -91,15 +91,15 @@ public class Sprites {
     |--------------------------------------------------------------------------
      */
     //BALLOOM
-    public static Sprites balloom_left1 = new Sprites("Data\\Sprites\\portal.png",16,16);
-    public static Sprites balloom_left2 = new Sprites("Data\\Sprites\\portal.png",16,16);
-    public static Sprites balloom_left3 = new Sprites("Data\\Sprites\\portal.png",16,16);
+    public static Sprites balloom_left1 = new Sprites("Data\\Sprites\\balloom_left1.png",16,16);
+    public static Sprites balloom_left2 = new Sprites("Data\\Sprites\\balloom_left2.png",16,16);
+    public static Sprites balloom_left3 = new Sprites("Data\\Sprites\\balloom_left3.png",16,16);
 
-    public static Sprites balloom_right1 = new Sprites("Data\\Sprites\\portal.png",16,16);
-    public static Sprites balloom_right2 = new Sprites("Data\\Sprites\\portal.png",16,16);
-    public static Sprites balloom_right3 = new Sprites("Data\\Sprites\\portal.png",16,16);
+    public static Sprites balloom_right1 = new Sprites("Data\\Sprites\\balloom_right1.png",16,16);
+    public static Sprites balloom_right2 = new Sprites("Data\\Sprites\\balloom_right2.png",16,16);
+    public static Sprites balloom_right3 = new Sprites("Data\\Sprites\\balloom_right3.png",16,16);
 
-    public static Sprites balloom_dead = new Sprites("Data\\Sprites\\portal.png",16,16);
+    public static Sprites balloom_dead = new Sprites("Data\\Sprites\\balloom_dead.png",16,16);
 
 
     /*

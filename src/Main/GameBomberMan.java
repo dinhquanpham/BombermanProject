@@ -16,11 +16,15 @@ public class GameBomberMan extends JPanel implements KeyListener {
     public static final int windowHeight = 768;
 
     // window
-    public BufferedImage scene = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
+    public static BufferedImage scene = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
 
     // player
     public int playerX = 48, playerY = 48;
     public BomberMan player = new BomberMan(playerX, playerY, player_down);
+
+    //enemy
+    public int balloom1X = 10 * 48, balloom1Y = 1 * 48;
+    public Balloom balloom1 = new Balloom(balloom1X, balloom1Y, balloom_right1);
 
     //bomb
     Bomb currentBomb;
@@ -61,6 +65,8 @@ public class GameBomberMan extends JPanel implements KeyListener {
                 currentFlame.draw(scene.getGraphics());
             }
         }
+        balloom1.move();
+        balloom1.draw(scene.getGraphics());
         player.draw(scene.getGraphics());
     }
 
