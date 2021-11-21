@@ -48,5 +48,5 @@ public abstract class Entities {
     }
 
     public abstract void draw(Graphics g);
-    public abstract void collide(Flame flame);
+    public abstract void collide(Object e);
 }

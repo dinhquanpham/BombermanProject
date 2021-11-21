@@ -5,6 +5,8 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import static Graphics.Sprites.*;
 import static Graphics.TextMap.*;
 
@@ -22,14 +24,15 @@ public class GameBomberMan extends JPanel implements KeyListener {
     public int playerX = 48, playerY = 48;
     public BomberMan player = new BomberMan(playerX, playerY, player_down);
 
+    private ArrayList<Bomb> bombLists = new ArrayList<Bomb>();
+    private ArrayList<Flame> flameLists = new ArrayList<Flame>();
     //enemy
     public int balloom1X = 10 * 48, balloom1Y = 1 * 48;
     public Balloom balloom1 = new Balloom(balloom1X, balloom1Y, balloom_right1);
 
-    //bomb
-    Bomb currentBomb;
-    Flame currentFlame;
     Entities [][] object = new Entities[R][C];
+
+
 
     public void drawMap() {
         for (int i = 0; i < R; i++) {
@@ -53,16 +56,26 @@ public class GameBomberMan extends JPanel implements KeyListener {
     public void update() {
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
-                if (currentFlame != null) {
-                    object[i][j].collide(currentFlame);
+                if (!flameLists.isEmpty()) {
+                    for (int id = 0; id < flameLists.size(); id++) {
+                        if(flameLists.get(id).isFlaming()) {
+                            object[i][j].collide(flameLists.get(id));
+                        }
+                    }
                 }
                 object[i][j].draw(scene.getGraphics());
             }
         }
-        if (currentBomb != null) currentBomb.draw(scene.getGraphics());
-        if (currentFlame != null) {
-            if (currentFlame.isFlaming()) {
-                currentFlame.draw(scene.getGraphics());
+        if (!bombLists.isEmpty()) {
+            for (Bomb bomb : bombLists) {
+                bomb.draw(scene.getGraphics());
+            }
+        }
+        if (!flameLists.isEmpty()) {
+            for (int i = 0; i < bombLists.size(); i++) {
+                if (flameLists.get(i).isFlaming()) {
+                    flameLists.get(i).draw(scene.getGraphics());
+                }
             }
         }
         balloom1.move();
@@ -90,15 +103,17 @@ public class GameBomberMan extends JPanel implements KeyListener {
             player.setDown(true);
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if (currentBomb == null) {
-                int bombX = (player.getX() + DEFAULT_SIZE / 2) / DEFAULT_SIZE;
-                int bombY = (player.getY() + DEFAULT_SIZE / 2) / DEFAULT_SIZE;
-                bombX *= DEFAULT_SIZE;
-                bombY *= DEFAULT_SIZE;
-                currentBomb = new Bomb(bombX, bombY, bomb);
-                currentBomb.setPlantedTime((int)System.currentTimeMillis());
-                currentFlame = new Flame(bombX, bombY, bomb_exploded);
-            }
+            int bombX = (player.getX() + DEFAULT_SIZE / 2) / DEFAULT_SIZE;
+            int bombY = (player.getY() + DEFAULT_SIZE / 2) / DEFAULT_SIZE;
+            if (map1[bombY][bombX] == -3)return;
+            map1[bombY][bombX] = -3;
+            bombX *= DEFAULT_SIZE;
+            bombY *= DEFAULT_SIZE;
+            Bomb newBomb = new Bomb(bombX, bombY, bomb);
+            newBomb.setPlantedTime((int)System.currentTimeMillis());
+            bombLists.add(newBomb);
+            Flame newFlame = new Flame(bombX, bombY, bomb_exploded);
+            flameLists.add(newFlame);
         }
     }
 
@@ -124,7 +139,7 @@ public class GameBomberMan extends JPanel implements KeyListener {
         frame.setTitle("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setLocation(25, 50);
+        frame.setLocation(50, 50);
         frame.setSize(windowWidth, windowHeight);
         GameBomberMan myGame = new GameBomberMan();
         frame.setFocusable(true);
@@ -133,24 +148,53 @@ public class GameBomberMan extends JPanel implements KeyListener {
         frame.add(myGame);
         frame.setVisible(true);
         myGame.drawMap();
+
         while (true) {
             myGame.update();
             myGame.player.move(myGame);
-            if (myGame.currentBomb != null) {
-                myGame.currentBomb.explode(myGame);
-                if (myGame.currentBomb.isExploded()) {
-                    myGame.currentFlame.setExplodedTime((int) System.currentTimeMillis());
-                    myGame.currentFlame.setFlaming(true);
-                    myGame.currentFlame.check();
-                    myGame.currentBomb = null;
+            if (!myGame.bombLists.isEmpty()) {
+                for (int i = 0; i < myGame.bombLists.size(); i++) {
+                    myGame.bombLists.get(i).explode(myGame);
+                    if (myGame.bombLists.get(i).isExploded()) {
+                        if (!myGame.bombLists.get(i).isChecked()) {
+                            myGame.bombLists.get(i).setChecked(true);
+                            myGame.flameLists.get(i).setExplodedTime((int) System.currentTimeMillis());
+                            myGame.flameLists.get(i).setFlaming(true);
+                            myGame.flameLists.get(i).check();
+                        }
+                        for (int j = i + 1; j < myGame.bombLists.size(); j++) {
+                            if (myGame.bombLists.get(j).isChecked()) {
+                                break;
+                            }
+                            myGame.bombLists.get(j).explode(myGame);
+                            myGame.bombLists.get(j).collide(myGame.flameLists.get(i));
+                            if (myGame.bombLists.get(j).isExploded()) {
+                                myGame.bombLists.get(j).setChecked(true);
+                                myGame.flameLists.get(j).setExplodedTime((int) System.currentTimeMillis());
+                                myGame.flameLists.get(j).setFlaming(true);
+                                myGame.flameLists.get(j).check();
+                            }
+                        }
+                    }
                 }
             }
-            if (myGame.currentFlame != null) {
-                if(myGame.currentFlame.isFlaming()) {
-                    myGame.currentFlame.handleFlame();
-                }
-                if (myGame.currentFlame.isEndFlame()) {
-                    myGame.currentFlame = null;
+            if (!myGame.flameLists.isEmpty()) {
+                for (int i = 0; i < myGame.flameLists.size(); i++) {
+                    if (myGame.flameLists.get(i).isFlaming()) {
+                        myGame.flameLists.get(i).handleFlame();
+                        if (myGame.flameLists.get(i).isEndFlame()) {
+                            myGame.flameLists.remove(i);
+                            myGame.bombLists.remove(i);
+                            i--;
+                            for (int idX = 0; idX < R; idX++) {
+                                for (int idY = 0; idY < C; idY++) {
+                                    if (map1[idX][idY] == -2 || map1[idX][idY] == 3 || map1[idX][idY] == -3) {
+                                        map1[idX][idY] = 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             myGame.draw();

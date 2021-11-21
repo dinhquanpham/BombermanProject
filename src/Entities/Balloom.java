@@ -52,20 +52,17 @@ public class Balloom extends Entities {
         for (int i = 0; i <= 3; i++) {
             int trueNextX = trueX + dx[i];
             int trueNextY = trueY + dy[i];
-            System.out.println("Direction: " + trueNextX + " " + trueNextY + " " + moved[trueNextY][trueNextX]);
             if (map1[trueNextY][trueNextX] != 1 &&
-                    map1[trueNextY][trueNextX] != 2 &&
-                    map1[trueNextY][trueNextX] != 3 &&
+                    map1[trueNextY][trueNextX] != 2 && map1[trueNextY][trueNextX] != -2 &&
+                    map1[trueNextY][trueNextX] != 3 && map1[trueNextY][trueNextX] != -3 &&
                     moved[trueNextY][trueNextX] != 1) {
                 totalOptions++;
                 options[totalOptions] = i;
             }
         }
         totalOptions++;
-        System.out.println(totalOptions);
 
         if (totalOptions > 0) {
-            //return options[0];
             int rnd = new Random().nextInt(totalOptions);
             return options[rnd];
         }
@@ -75,17 +72,10 @@ public class Balloom extends Entities {
     public void move() {
         int trueX = x / DEFAULT_SIZE;
         int trueY = y / DEFAULT_SIZE;
-        System.out.println("trueX: " + trueX + " trueY: " + trueY + " pre " + preIndexDirection + " now " + indexDirection);
-        System.out.println(moved[trueY][trueX]);
-
         if (x % 48 == 0 && y % 48 == 0) {
-            //preIndexDirection = indexDirection;
-            //moved[trueY][trueX] = 1;
             indexDirection = chooseDirection();
         }
         if (indexDirection == -1) {
-            System.out.println((int)(trueX - dx[preIndexDirection]) + " " + (int)(trueY - dy[preIndexDirection]));
-            System.out.println(moved[trueY - dy[preIndexDirection]][trueX - dx[preIndexDirection]]);
             moved[trueY - dy[preIndexDirection]][trueX - dx[preIndexDirection]] = 0;
             return;
         } else {
@@ -104,7 +94,7 @@ public class Balloom extends Entities {
         else currentSprite = balloomAnimationLeft[indexAnimationBalloom];
     }
 
-    public void collide(Flame flame) {
+    public void collide(Object e) {
         return;
     }
 }

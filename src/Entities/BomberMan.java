@@ -173,7 +173,7 @@ public class BomberMan extends Entities {
     }
 
     @Override
-    public void collide(Flame flame) {
+    public void collide(Object e) {
         return;
     }
 }

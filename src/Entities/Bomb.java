@@ -10,10 +10,10 @@ import java.awt.*;
 import static Graphics.TextMap.*;
 
 public class Bomb extends Entities {
-    boolean exploded;
+    boolean exploded, checked;
 
     private int plantedTime;
-    private final int plantedTiming = 2000;
+    private final int plantedTiming = 3000;
     private int indexAnimationBomb = 0;
     public static Sprites[] bombAnimation = {
             bomb,
@@ -41,6 +41,22 @@ public class Bomb extends Entities {
         this.plantedTime = plantedTime;
     }
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public int getIndexAnimationBomb() {
+        return indexAnimationBomb;
+    }
+
+    public void setIndexAnimationBomb(int indexAnimationBomb) {
+        this.indexAnimationBomb = indexAnimationBomb;
+    }
+
     @Override
     public void draw(Graphics g) {
         g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
@@ -48,7 +64,9 @@ public class Bomb extends Entities {
     }
 
     public void explode(GameBomberMan myGame) {
-        if (exploded) return;
+        if (exploded) {
+            return;
+        }
         int existTime = (int) System.currentTimeMillis() - plantedTime;
         int cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
@@ -63,13 +81,25 @@ public class Bomb extends Entities {
             map1[y / DEFAULT_SIZE][x / DEFAULT_SIZE] = 3;
         }
         if (existTime > plantedTiming) {
-            map1[y / DEFAULT_SIZE][x / DEFAULT_SIZE] = 0;
             exploded = true;
         }
     }
 
     @Override
-    public void collide(Flame flame) {
-        return;
+    public void collide(Object e) {
+        if(isExploded())return;
+        if (e instanceof  Flame) {
+            Flame flame = (Flame) e;
+            int topBomb = (flame.getY() - y) / DEFAULT_SIZE;
+            int downBomb = (y - flame.getY()) / DEFAULT_SIZE;
+            int leftBomb = (flame.getX() - x) / DEFAULT_SIZE;
+            int rightBomb = (x - flame.getX()) / DEFAULT_SIZE;
+            if ((topBomb == 0 && downBomb == 0 && 0 <= rightBomb && rightBomb <= flame.getRight())
+                    || (topBomb == 0 && downBomb == 0 && 0 <= leftBomb && leftBomb <= flame.getLeft())
+                    || (rightBomb == 0 && leftBomb == 0 && 0 <= topBomb && topBomb <= flame.getTop())
+                    || (rightBomb == 0 && leftBomb == 0 && 0 <= downBomb && downBomb <= flame.getDown())) {
+                exploded = true;
+            }
+        }
     }
 }
