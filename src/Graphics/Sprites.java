@@ -86,23 +86,6 @@ public class Sprites {
     public static Sprites player_dead3 = new Sprites("Data\\Sprites\\player_dead3.png",14,16);
 
     /*
-    |--------------------------------------------------------------------------
-    | Character
-    |--------------------------------------------------------------------------
-     */
-    //BALLOOM
-    public static Sprites balloom_left1 = new Sprites("Data\\Sprites\\balloom_left1.png",16,16);
-    public static Sprites balloom_left2 = new Sprites("Data\\Sprites\\balloom_left2.png",16,16);
-    public static Sprites balloom_left3 = new Sprites("Data\\Sprites\\balloom_left3.png",16,16);
-
-    public static Sprites balloom_right1 = new Sprites("Data\\Sprites\\balloom_right1.png",16,16);
-    public static Sprites balloom_right2 = new Sprites("Data\\Sprites\\balloom_right2.png",16,16);
-    public static Sprites balloom_right3 = new Sprites("Data\\Sprites\\balloom_right3.png",16,16);
-
-    public static Sprites balloom_dead = new Sprites("Data\\Sprites\\balloom_dead.png",16,16);
-
-
-    /*
 	|--------------------------------------------------------------------------
 	| Bomb Sprites
 	|--------------------------------------------------------------------------
@@ -136,9 +119,9 @@ public class Sprites {
     public static Sprites explosion_horizontal_right_last1 = new Sprites("Data\\Sprites\\explosion_horizontal_right_last1.png", 16, 16);
     public static Sprites explosion_horizontal_right_last2 = new Sprites("Data\\Sprites\\explosion_horizontal_right_last2.png", 16, 16);
 
-    public static Sprites explosion_vertical_top_last = new Sprites("Data\\Sprites\\explosion_vertical_top_last.png", 16, 16);
-    public static Sprites explosion_vertical_top_last1 = new Sprites("Data\\Sprites\\explosion_vertical_top_last1.png", 16, 16);
-    public static Sprites explosion_vertical_top_last2 = new Sprites("Data\\Sprites\\explosion_vertical_top_last2.png", 16, 16);
+    public static Sprites explosion_vertical_up_last = new Sprites("Data\\Sprites\\explosion_vertical_top_last.png", 16, 16);
+    public static Sprites explosion_vertical_up_last1 = new Sprites("Data\\Sprites\\explosion_vertical_top_last1.png", 16, 16);
+    public static Sprites explosion_vertical_up_last2 = new Sprites("Data\\Sprites\\explosion_vertical_top_last2.png", 16, 16);
 
     public static Sprites explosion_vertical_down_last = new Sprites("Data\\Sprites\\explosion_vertical_down_last.png", 16, 16);
     public static Sprites explosion_vertical_down_last1 = new Sprites("Data\\Sprites\\explosion_vertical_down_last1.png", 16, 16);
@@ -147,4 +130,83 @@ public class Sprites {
     public static Sprites brick_exploded = new Sprites("Data\\Sprites\\brick_exploded.png", 16, 16);
     public static Sprites brick_exploded1 = new Sprites("Data\\Sprites\\brick_exploded1.png", 16, 16);
     public static Sprites brick_exploded2 = new Sprites("Data\\Sprites\\brick_exploded2.png", 16, 16);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Powerups
+    |--------------------------------------------------------------------------
+     */
+    public static Sprites powerup_bombs = new Sprites("Data\\Sprites\\powerup_bombs.png", 16, 16);
+    public static Sprites powerup_flames = new Sprites("Data\\Sprites\\powerup_flames.png", 16, 16);
+    public static Sprites powerup_speed = new Sprites("Data\\Sprites\\powerup_speed.png", 16, 16);
+    public static Sprites powerup_wallpass = new Sprites("Data\\Sprites\\powerup_wallpass.png", 16, 16);
+    public static Sprites powerup_detonator = new Sprites("Data\\Sprites\\powerup_detonator.png", 16, 16);
+    public static Sprites powerup_bombpass = new Sprites("Data\\Sprites\\powerup_bombpass.png", 16, 16);
+    public static Sprites powerup_flamepass = new Sprites("Data\\Sprites\\powerup_flamepass.png ", 16, 16);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Character
+    |--------------------------------------------------------------------------
+     */
+    //BALLOOM
+    public static Sprites balloom_left1 = new Sprites("Data\\Sprites\\balloom_left1.png",16,16);
+    public static Sprites balloom_left2 = new Sprites("Data\\Sprites\\balloom_left2.png",16,16);
+    public static Sprites balloom_left3 = new Sprites("Data\\Sprites\\balloom_left3.png",16,16);
+
+    public static Sprites balloom_right1 = new Sprites("Data\\Sprites\\balloom_right1.png",16,16);
+    public static Sprites balloom_right2 = new Sprites("Data\\Sprites\\balloom_right2.png",16,16);
+    public static Sprites balloom_right3 = new Sprites("Data\\Sprites\\balloom_right3.png",16,16);
+
+    public static Sprites balloom_dead = new Sprites("Data\\Sprites\\balloom_dead.png",16,16);
+
+    //ONEAL
+    public static Sprites oneal_left1 = new Sprites("Data\\Sprites\\oneal_left1.png", 16, 16);
+    public static Sprites oneal_left2 = new Sprites("Data\\Sprites\\oneal_left2.png", 16, 16);
+    public static Sprites oneal_left3 = new Sprites("Data\\Sprites\\oneal_left3.png", 16, 16);
+
+    public static Sprites oneal_right1 = new Sprites("Data\\Sprites\\oneal_right1.png", 16, 16);
+    public static Sprites oneal_right2 = new Sprites("Data\\Sprites\\oneal_right2.png", 16, 16);
+    public static Sprites oneal_right3 = new Sprites("Data\\Sprites\\oneal_right3.png", 16, 16);
+
+    public static Sprites oneal_dead = new Sprites("Data\\Sprites\\oneal_dead.png", 16, 16);
+
+    //Doll
+    public static Sprites doll_left1 = new Sprites("Data\\Sprites\\doll_left1.png", 16, 16);
+    public static Sprites doll_left2 = new Sprites("Data\\Sprites\\doll_left2.png", 16, 16);
+    public static Sprites doll_left3 = new Sprites("Data\\Sprites\\doll_left3.png", 16, 16);
+
+    public static Sprites doll_right1 = new Sprites("Data\\Sprites\\doll_right1.png", 16, 16);
+    public static Sprites doll_right2 = new Sprites("Data\\Sprites\\doll_right2.png", 16, 16);
+    public static Sprites doll_right3 = new Sprites("Data\\Sprites\\doll_right3.png", 16, 16);
+
+    public static Sprites doll_dead = new Sprites("Data\\Sprites\\doll_dead.png", 16, 16);
+
+    //Minvo
+    public static Sprites minvo_left1 = new Sprites("Data\\Sprites\\minvo_left1.png", 16, 16);
+    public static Sprites minvo_left2 = new Sprites("Data\\Sprites\\minvo_left2.png", 16, 16);
+    public static Sprites minvo_left3 = new Sprites("Data\\Sprites\\minvo_left3.png", 16, 16);
+
+    public static Sprites minvo_right1 = new Sprites("Data\\Sprites\\minvo_right1.png", 16, 16);
+    public static Sprites minvo_right2 = new Sprites("Data\\Sprites\\minvo_right2.png", 16, 16);
+    public static Sprites minvo_right3 = new Sprites("Data\\Sprites\\minvo_right3.png", 16, 16);
+
+    public static Sprites minvo_dead = new Sprites("Data\\Sprites\\minvo_dead.png", 16, 16);
+
+    //Kondoria
+    public static Sprites kondoria_left1 = new Sprites("Data\\Sprites\\kondoria_left1.png", 16, 16);
+    public static Sprites kondoria_left2 = new Sprites("Data\\Sprites\\kondoria_left2.png", 16, 16);
+    public static Sprites kondoria_left3 = new Sprites("Data\\Sprites\\kondoria_left3.png", 16, 16);
+
+    public static Sprites kondoria_right1 = new Sprites("Data\\Sprites\\kondoria_right1.png", 16, 16);
+    public static Sprites kondoria_right2 = new Sprites("Data\\Sprites\\kondoria_right2.png", 16, 16);
+    public static Sprites kondoria_right3 = new Sprites("Data\\Sprites\\kondoria_right3.png", 16, 16);
+
+    public static Sprites kondoria_dead = new Sprites("Data\\Sprites\\kondoria_dead.png", 16, 16);
+
+    //ALL
+    public static Sprites mob_dead1 = new Sprites("Data\\Sprites\\mob_dead1.png", 16, 16);
+    public static Sprites mob_dead2 = new Sprites("Data\\Sprites\\mob_dead2.png", 16, 16);
+    public static Sprites mob_dead3 = new Sprites("Data\\Sprites\\mob_dead3.png", 16, 16);
 }

@@ -10,12 +10,12 @@ import static Graphics.TextMap.map1;
 
 public class Flame extends Entities{
     private boolean flaming, endFlame;
-    private boolean blockTop, blockDown, blockLeft, blockRight;
+    private boolean blockUp, blockDown, blockLeft, blockRight;
     private int explodedTime;
     private final int explodedTiming = 300;
     private int indexAnimationFlames = 0;
     private int sizeFlames = 3;
-    private int top = 0, down = 0, right = 0, left = 0;
+    private int up = 0, down = 0, right = 0, left = 0;
     public static Sprites[] flamesAnimation = {
             bomb_exploded,
             bomb_exploded1,
@@ -43,10 +43,10 @@ public class Flame extends Entities{
             explosion_horizontal_right_last2
     };
 
-    public static Sprites[] flamesAnimationTop = {
-            explosion_vertical_top_last,
-            explosion_vertical_top_last1,
-            explosion_vertical_top_last2
+    public static Sprites[] flamesAnimationUp = {
+            explosion_vertical_up_last,
+            explosion_vertical_up_last1,
+            explosion_vertical_up_last2
     };
 
     public static Sprites[] flamesAnimationDown = {
@@ -82,12 +82,12 @@ public class Flame extends Entities{
         this.explodedTime = explodedTime;
     }
 
-    public int getTop() {
-        return top;
+    public int getUp() {
+        return up;
     }
 
-    public void setTop(int top) {
-        this.top = top;
+    public void setUp(int up) {
+        this.up = up;
     }
 
     public int getDown() {
@@ -114,12 +114,12 @@ public class Flame extends Entities{
         this.left = left;
     }
 
-    public boolean isBlockTop() {
-        return blockTop;
+    public boolean isBlockUp() {
+        return blockUp;
     }
 
-    public void setBlockTop(boolean blockTop) {
-        this.blockTop = blockTop;
+    public void setBlockUp(boolean blockUp) {
+        this.blockUp = blockUp;
     }
 
     public boolean isBlockDown() {
@@ -181,17 +181,17 @@ public class Flame extends Entities{
             }
         }
 
-        //TopExplosion
-        for (int i = 1; i <= top; i++) {
+        //UpExplosion
+        for (int i = 1; i <= up; i++) {
             if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 3 ||
                     map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -3)break;
-            if (i < top) {
+            if (i < up) {
                 g.drawImage(flamesAnimationVertical[indexAnimationFlames].getImage(), x,
                         y - DEFAULT_SIZE * i, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
             }
             else  {
-                if (blockTop)break;
-                g.drawImage(flamesAnimationTop[indexAnimationFlames].getImage(), x,
+                if (blockUp)break;
+                g.drawImage(flamesAnimationUp[indexAnimationFlames].getImage(), x,
                         y - DEFAULT_SIZE * i, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
             }
         }
@@ -266,7 +266,7 @@ public class Flame extends Entities{
                 right = i;
             }
         }
-        //TopExplosion
+        //UpExplosion
         for (int i = 1; i <= sizeFlames; i++) {
             if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 1 ||
                     map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -2) {
@@ -274,12 +274,12 @@ public class Flame extends Entities{
             }
             if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2) {
                 map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] = -2;
-                top = i;
-                blockTop = true;
+                up = i;
+                blockUp = true;
                 break;
             }
             else {
-                top = i;
+                up = i;
             }
         }
         //DownExplosion

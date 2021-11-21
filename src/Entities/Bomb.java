@@ -96,7 +96,7 @@ public class Bomb extends Entities {
             int rightBomb = (x - flame.getX()) / DEFAULT_SIZE;
             if ((topBomb == 0 && downBomb == 0 && 0 <= rightBomb && rightBomb <= flame.getRight())
                     || (topBomb == 0 && downBomb == 0 && 0 <= leftBomb && leftBomb <= flame.getLeft())
-                    || (rightBomb == 0 && leftBomb == 0 && 0 <= topBomb && topBomb <= flame.getTop())
+                    || (rightBomb == 0 && leftBomb == 0 && 0 <= topBomb && topBomb <= flame.getUp())
                     || (rightBomb == 0 && leftBomb == 0 && 0 <= downBomb && downBomb <= flame.getDown())) {
                 exploded = true;
             }

@@ -65,7 +65,7 @@ public class Brick extends Entities {
             int rightBrick = (x - flame.getX()) / DEFAULT_SIZE;
             if ((topBrick == 0 && downBrick == 0 && rightBrick == flame.getRight())
                     || (topBrick == 0 && downBrick == 0 && leftBrick == flame.getLeft())
-                    || (rightBrick == 0 && leftBrick == 0 && topBrick == flame.getTop())
+                    || (rightBrick == 0 && leftBrick == 0 && topBrick == flame.getUp())
                     || (rightBrick == 0 && leftBrick == 0 && downBrick == flame.getDown())) {
                 this.setDestroyed(true);
                 collidedTime = (int) System.currentTimeMillis();
