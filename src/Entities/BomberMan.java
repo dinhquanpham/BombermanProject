@@ -13,6 +13,8 @@ public class BomberMan extends Entities {
     private int framePlayer = 0;
     private int intervalPlayer = 10;
     private int playerSpeed = 1;
+    private int playerBomb = 1;
+    private int playerFlame = 1;
     public static Sprites[] playerAnimationLeft = {
             player_left,
             player_left_1,
@@ -102,6 +104,30 @@ public class BomberMan extends Entities {
         this.intervalPlayer = intervalPlayer;
     }
 
+    public int getPlayerSpeed() {
+        return playerSpeed;
+    }
+
+    public void setPlayerSpeed(int playerSpeed) {
+        this.playerSpeed = playerSpeed;
+    }
+
+    public int getPlayerBomb() {
+        return playerBomb;
+    }
+
+    public void setPlayerBomb(int playerBomb) {
+        this.playerBomb = playerBomb;
+    }
+
+    public int getPlayerFlame() {
+        return playerFlame;
+    }
+
+    public void setPlayerFlame(int playerFlame) {
+        this.playerFlame = playerFlame;
+    }
+
     @Override
     public void draw(Graphics g) {
         g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
@@ -117,35 +143,72 @@ public class BomberMan extends Entities {
         int trueNextY_3 = (nextY + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
         int trueNextX_4 = (nextX + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
         int trueNextY_4 = (nextY + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
-        return !(map1[trueNextY_1][trueNextX_1] == 1 || map1[trueNextY_1][trueNextX_1] == 2 || map1[trueNextY_1][trueNextX_1] == 3 ||
-                map1[trueNextY_2][trueNextX_2] == 1 || map1[trueNextY_2][trueNextX_2] == 2 || map1[trueNextY_2][trueNextX_2] == 3 ||
-                map1[trueNextY_3][trueNextX_3] == 1 || map1[trueNextY_3][trueNextX_3] == 2 || map1[trueNextY_3][trueNextX_3] == 3 ||
-                map1[trueNextY_4][trueNextX_4] == 1 || map1[trueNextY_4][trueNextX_4] == 2 || map1[trueNextY_4][trueNextX_4] == 3);
+        return !(map1[trueNextY_1][trueNextX_1] > 0 ||
+                map1[trueNextY_2][trueNextX_2] > 0 ||
+                map1[trueNextY_3][trueNextX_3] > 0 ||
+                map1[trueNextY_4][trueNextX_4] > 0);
     }
 
     public void move(GameBomberMan game) {
         moving = false;
         if (right) {
-            if (x <= GameBomberMan.windowWidth - DEFAULT_SIZE * 3 + 24 && isFreeToMove(x + playerSpeed, y)) {
-                x += playerSpeed;
+            int trueSpeed = 0;
+            for (int i = 1; i <= playerSpeed; i++) {
+                if (x >= DEFAULT_SIZE && isFreeToMove(x + i, y)) {
+                    trueSpeed = i;
+                }
+                else {
+                    break;
+                }
+            }
+            x += trueSpeed;
+            if (trueSpeed > 0) {
                 moving = true;
             }
         }
+
         if (left) {
-            if (x >= DEFAULT_SIZE && isFreeToMove(x - playerSpeed, y)) {
-                x -= playerSpeed;
+            int trueSpeed = 0;
+            for (int i = 1; i <= playerSpeed; i++) {
+                if (x >= DEFAULT_SIZE && isFreeToMove(x - i, y)) {
+                    trueSpeed = i;
+                }
+                else {
+                    break;
+                }
+            }
+            x -= trueSpeed;
+            if (trueSpeed > 0) {
                 moving = true;
             }
         }
         if (down) {
-            if (y <= GameBomberMan.windowHeight - DEFAULT_SIZE * 3 && isFreeToMove(x, y + playerSpeed)) {
-                y += playerSpeed;
+            int trueSpeed = 0;
+            for (int i = 1; i <= playerSpeed; i++) {
+                if (x >= DEFAULT_SIZE && isFreeToMove(x, y + i)) {
+                    trueSpeed = i;
+                }
+                else {
+                    break;
+                }
+            }
+            y += trueSpeed;
+            if (trueSpeed > 0) {
                 moving = true;
             }
         }
         if (up) {
-            if (y >= DEFAULT_SIZE && isFreeToMove(x, y - playerSpeed)) {
-                y -= playerSpeed;
+            int trueSpeed = 0;
+            for (int i = 1; i <= playerSpeed; i++) {
+                if (x >= DEFAULT_SIZE && isFreeToMove(x, y - i)) {
+                    trueSpeed = i;
+                }
+                else {
+                    break;
+                }
+            }
+            y -= trueSpeed;
+            if (trueSpeed > 0) {
                 moving = true;
             }
         }
@@ -174,6 +237,27 @@ public class BomberMan extends Entities {
 
     @Override
     public void collide(Object e) {
-        return;
+        if (e instanceof Items) {
+            Items items = (Items) e;
+            if (!items.isDestroyed() || items.isUsed())return;
+            boolean xOverlaps = (x < items.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > items.getX());
+            boolean yOverlaps = (y < items.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > items.getY());
+            if (xOverlaps && yOverlaps) {
+                switch (items.getIndex()) {
+                    case -10: {
+                        playerBomb++;
+                        break;
+                    }
+                    case -11: {
+                        playerFlame++;
+                        break;
+                    }
+                    default: {
+                        playerSpeed++;
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

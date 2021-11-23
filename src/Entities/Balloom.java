@@ -53,6 +53,9 @@ public class Balloom extends Entities {
             int trueNextX = trueX + dx[i];
             int trueNextY = trueY + dy[i];
             if (map1[trueNextY][trueNextX] != 1 &&
+                    map1[trueNextY][trueNextX] != 10 &&
+                    map1[trueNextY][trueNextX] != 11 &&
+                    map1[trueNextY][trueNextX] != 12 &&
                     map1[trueNextY][trueNextX] != 2 && map1[trueNextY][trueNextX] != -2 &&
                     map1[trueNextY][trueNextX] != 3 && map1[trueNextY][trueNextX] != -3 &&
                     moved[trueNextY][trueNextX] != 1) {

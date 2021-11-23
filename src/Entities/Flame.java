@@ -14,7 +14,7 @@ public class Flame extends Entities{
     private int explodedTime;
     private final int explodedTiming = 300;
     private int indexAnimationFlames = 0;
-    private int sizeFlames = 3;
+    private int sizeFlames = 1;
     private int up = 0, down = 0, right = 0, left = 0;
     public static Sprites[] flamesAnimation = {
             bomb_exploded,
@@ -114,36 +114,12 @@ public class Flame extends Entities{
         this.left = left;
     }
 
-    public boolean isBlockUp() {
-        return blockUp;
+    public int getSizeFlames() {
+        return sizeFlames;
     }
 
-    public void setBlockUp(boolean blockUp) {
-        this.blockUp = blockUp;
-    }
-
-    public boolean isBlockDown() {
-        return blockDown;
-    }
-
-    public void setBlockDown(boolean blockDown) {
-        this.blockDown = blockDown;
-    }
-
-    public boolean isBlockLeft() {
-        return blockLeft;
-    }
-
-    public void setBlockLeft(boolean blockLeft) {
-        this.blockLeft = blockLeft;
-    }
-
-    public boolean isBlockRight() {
-        return blockRight;
-    }
-
-    public void setBlockRight(boolean blockRight) {
-        this.blockRight = blockRight;
+    public void setSizeFlames(int sizeFlames) {
+        this.sizeFlames = sizeFlames;
     }
 
     @Override
@@ -240,7 +216,8 @@ public class Flame extends Entities{
                     map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == -2) {
                 break;
             }
-            if (map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2) {
+            if (map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2 ||
+                    map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] >= 10) {
                 map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] = -2;
                 left = i;
                 blockLeft = true;
@@ -256,7 +233,8 @@ public class Flame extends Entities{
                     map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == -2) {
                 break;
             }
-            if (map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2) {
+            if (map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2 ||
+                    map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] >= 10) {
                 map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] = -2;
                 right = i;
                 blockRight = true;
@@ -272,7 +250,8 @@ public class Flame extends Entities{
                     map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -2) {
                 break;
             }
-            if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2) {
+            if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2 ||
+                    map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] >= 10) {
                 map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] = -2;
                 up = i;
                 blockUp = true;
@@ -288,7 +267,8 @@ public class Flame extends Entities{
                     map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -2) {
                 break;
             }
-            if (map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2) {
+            if (map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2 ||
+                    map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] >= 10) {
                 map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] = -2;
                 down = i;
                 blockDown = true;
