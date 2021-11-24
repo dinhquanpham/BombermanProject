@@ -13,8 +13,8 @@ public class BomberMan extends Entities {
     private int framePlayer = 0;
     private int intervalPlayer = 10;
     private int playerSpeed = 1;
-    private int playerBomb = 1;
-    private int playerFlame = 1;
+    private int playerBomb = 2;
+    private int playerFlame = 2;
     public static Sprites[] playerAnimationLeft = {
             player_left,
             player_left_1,
@@ -149,7 +149,7 @@ public class BomberMan extends Entities {
                 map1[trueNextY_4][trueNextX_4] > 0);
     }
 
-    public void move(GameBomberMan game) {
+    public void move() {
         moving = false;
         if (right) {
             int trueSpeed = 0;

@@ -9,6 +9,8 @@ import static Graphics.TextMap.map1;
 
 public class Balloom extends Entities {
     private int[][] moved = new int[15][31];
+    private boolean isDead, isEndAnimation;
+    private int deadTime;
     private int indexDirection = 0;
     private int preIndexDirection = 0;
     private int spawnTime;
@@ -28,15 +30,37 @@ public class Balloom extends Entities {
             balloom_right2,
             balloom_right3
     };
-
+    public static Sprites[] balloomAnimationDead = {
+            mob_dead1,
+            mob_dead2,
+            mob_dead3
+    };
 
     public Balloom(int x, int y, Sprites sprite) {
         super(x, y, sprite);
     }
 
     public void draw(Graphics g) {
+        if (!isDead) {
         g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
                 Sprites.DEFAULT_SIZE, null);
+        } else {
+            int existTime = (int) System.currentTimeMillis() - deadTime;
+            if (existTime < 300) {
+                g.drawImage(balloomAnimationDead[existTime / 100].getImage(), x, y, Sprites.DEFAULT_SIZE,
+                        Sprites.DEFAULT_SIZE, null);
+            } else {
+                isEndAnimation = true;
+            }
+        }
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public boolean isEndAnimation() {
+        return isEndAnimation;
     }
 
     public boolean isFreeToMove(int nextX, int nextY) {
@@ -73,6 +97,7 @@ public class Balloom extends Entities {
     }
 
     public void move() {
+        if (isDead)return;
         int trueX = x / DEFAULT_SIZE;
         int trueY = y / DEFAULT_SIZE;
         if (x % 48 == 0 && y % 48 == 0) {
@@ -98,6 +123,38 @@ public class Balloom extends Entities {
     }
 
     public void collide(Object e) {
-        return;
+        if (e instanceof Flame) {
+            if (isDead)return;
+            Flame flame = (Flame) e;
+            //check left Right
+            //System.out.println("BOM UP DOWN  " + flame.getUp() + "  " + flame.getDown());
+            //System.out.println("BOM LEFT RIGHT  " + flame.getLeft() + "  " + flame.getRight());
+            boolean xOverlapsLeftRight = (x <= flame.getX() + DEFAULT_SIZE * flame.getRight()) &&
+                    (x >= flame.getX() - DEFAULT_SIZE * flame.getLeft());
+            boolean yOverlapsLeftRight = (y < flame.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > flame.getY());
+            //System.out.println("BALLOOM : " + x + "   " + y);
+            //System.out.println("LEFT RIGHT: " + (flame.getX() - DEFAULT_SIZE * flame.getLeft()) + " " + (flame.getX() + DEFAULT_SIZE * flame.getRight()));
+            //System.out.println("UP DOWN " + (flame.getY() - DEFAULT_SIZE) + "   " + (flame.getY() + DEFAULT_SIZE));
+            if (xOverlapsLeftRight && yOverlapsLeftRight) {
+                //System.out.println("TRUE 1 ");
+                isDead = true;
+                deadTime = (int) System.currentTimeMillis();
+                return;
+            }
+            // check up down
+            boolean xOverlapsUpDown = (x < flame.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > flame.getX());
+            boolean yOverlapsUpDown = (y <= flame.getY() + DEFAULT_SIZE * flame.getDown()) &&
+                    (y >= flame.getY() - DEFAULT_SIZE * flame.getUp());
+            //System.out.println("BALLOOM : " + x + "   " + y);
+            //System.out.println("LEFT RIGHT: " + (flame.getX() - DEFAULT_SIZE) + "   " + (flame.getX() + DEFAULT_SIZE));
+            //System.out.println("UP DOWN: " + (flame.getY() - DEFAULT_SIZE * flame.getUp()) + " " + (flame.getY() + DEFAULT_SIZE * flame.getDown()));
+            //System.out.println("UP RIGHT X  " + xOverlapsUpDown + "  --  Y  " + yOverlapsUpDown);
+            if (xOverlapsUpDown && yOverlapsUpDown) {
+                //System.out.println("TRUE 2 ");
+                isDead = true;
+                deadTime = (int) System.currentTimeMillis();
+
+            }
+        }
     }
 }

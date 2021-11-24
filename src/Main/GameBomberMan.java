@@ -24,19 +24,24 @@ public class GameBomberMan extends JPanel implements KeyListener {
     public int playerX = 48, playerY = 48;
     public BomberMan player = new BomberMan(playerX, playerY, player_down);
 
-    private ArrayList<Bomb> bombLists = new ArrayList<Bomb>();
-    private ArrayList<Flame> flameLists = new ArrayList<Flame>();
+    private final ArrayList<Bomb> bombLists = new ArrayList<Bomb>();
+    private final ArrayList<Flame> flameLists = new ArrayList<Flame>();
+    private final ArrayList<Balloom> enemyLists = new ArrayList<Balloom>();
+
     //enemy
-    public int balloom1X = 10 * 48, balloom1Y = 48;
-    public int balloom2X = 11 * 48, balloom2Y = 13 * 48;
-    public int balloom3X = 3 * 48, balloom3Y = 7 * 48;
-    public Balloom balloom1 = new Balloom(balloom1X, balloom1Y, balloom_right1);
-    public Balloom balloom2 = new Balloom(balloom2X, balloom2Y, balloom_right1);
-    public Balloom balloom3 = new Balloom(balloom3X, balloom3Y, balloom_right1);
     Entities [][] object = new Entities[R][C];
     int bombUsed;
 
     public void drawMap() {
+        int balloom1X = 10 * 48, balloom1Y = 48;
+        int balloom2X = 11 * 48, balloom2Y = 13 * 48;
+        int balloom3X = 3 * 48, balloom3Y = 7 * 48;
+        Balloom balloom1 = new Balloom(balloom1X, balloom1Y, balloom_right1);
+        Balloom balloom2 = new Balloom(balloom2X, balloom2Y, balloom_right1);
+        Balloom balloom3 = new Balloom(balloom3X, balloom3Y, balloom_right1);
+        enemyLists.add(balloom1);
+        enemyLists.add(balloom2);
+        enemyLists.add(balloom3);
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
                 switch (map1[i][j]) {
@@ -101,21 +106,75 @@ public class GameBomberMan extends JPanel implements KeyListener {
             }
         }
         if (!flameLists.isEmpty()) {
-            for (int i = 0; i < bombLists.size(); i++) {
-                if (flameLists.get(i).isFlaming()) {
-                    flameLists.get(i).draw(scene.getGraphics());
+            for (Flame flame: flameLists) {
+                if (flame.isFlaming()) {
+                    flame.draw(scene.getGraphics());
+                    if (!enemyLists.isEmpty()) {
+                        for (Balloom enemy : enemyLists) {
+                            enemy.collide(flame);
+                        }
+                    }
                 }
             }
         }
-        balloom1.move();
-        balloom1.draw(scene.getGraphics());
-        balloom2.move();
-        balloom2.draw(scene.getGraphics());
-        balloom3.move();
-        balloom3.draw(scene.getGraphics());
+        enemyLists.removeIf(e -> e.isEndAnimation());
+        if (!enemyLists.isEmpty()) {
+            for (Balloom enemy : enemyLists) {
+                enemy.move();
+                enemy.draw(scene.getGraphics());
+            }
+        }
         player.draw(scene.getGraphics());
     }
-
+    public void handle() {
+        player.move();
+        if (!bombLists.isEmpty()) {
+            for (int i = 0; i < bombLists.size(); i++) {
+                bombLists.get(i).explode(player);
+                if (bombLists.get(i).isExploded()) {
+                    if (!bombLists.get(i).isChecked()) {
+                        bombLists.get(i).setChecked(true);
+                        flameLists.get(i).setExplodedTime((int) System.currentTimeMillis());
+                        flameLists.get(i).setFlaming(true);
+                        flameLists.get(i).check();
+                    }
+                    for (int j = i + 1; j < bombLists.size(); j++) {
+                        if (bombLists.get(j).isChecked()) {
+                            break;
+                        }
+                        bombLists.get(j).explode(player);
+                        bombLists.get(j).collide(flameLists.get(i));
+                        if (bombLists.get(j).isExploded()) {
+                            bombLists.get(j).setChecked(true);
+                            flameLists.get(j).setExplodedTime((int) System.currentTimeMillis());
+                            flameLists.get(j).setFlaming(true);
+                            flameLists.get(j).check();
+                        }
+                    }
+                }
+            }
+        }
+        if (!flameLists.isEmpty()) {
+            for (int i = 0; i < flameLists.size(); i++) {
+                if (flameLists.get(i).isFlaming()) {
+                    flameLists.get(i).handleFlame();
+                    if (flameLists.get(i).isEndFlame()) {
+                        flameLists.remove(i);
+                        bombLists.remove(i);
+                        i--;
+                        bombUsed--;
+                        for (int idX = 0; idX < R; idX++) {
+                            for (int idY = 0; idY < C; idY++) {
+                                if (map1[idX][idY] == -2 || map1[idX][idY] == 3 || map1[idX][idY] == -3) {
+                                    map1[idX][idY] = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -184,56 +243,9 @@ public class GameBomberMan extends JPanel implements KeyListener {
         frame.add(myGame);
         frame.setVisible(true);
         myGame.drawMap();
-
         while (true) {
             myGame.update();
-            myGame.player.move(myGame);
-            if (!myGame.bombLists.isEmpty()) {
-                for (int i = 0; i < myGame.bombLists.size(); i++) {
-                    myGame.bombLists.get(i).explode(myGame);
-                    if (myGame.bombLists.get(i).isExploded()) {
-                        if (!myGame.bombLists.get(i).isChecked()) {
-                            myGame.bombLists.get(i).setChecked(true);
-                            myGame.flameLists.get(i).setExplodedTime((int) System.currentTimeMillis());
-                            myGame.flameLists.get(i).setFlaming(true);
-                            myGame.flameLists.get(i).check();
-                        }
-                        for (int j = i + 1; j < myGame.bombLists.size(); j++) {
-                            if (myGame.bombLists.get(j).isChecked()) {
-                                break;
-                            }
-                            myGame.bombLists.get(j).explode(myGame);
-                            myGame.bombLists.get(j).collide(myGame.flameLists.get(i));
-                            if (myGame.bombLists.get(j).isExploded()) {
-                                myGame.bombLists.get(j).setChecked(true);
-                                myGame.flameLists.get(j).setExplodedTime((int) System.currentTimeMillis());
-                                myGame.flameLists.get(j).setFlaming(true);
-                                myGame.flameLists.get(j).check();
-                            }
-                        }
-                    }
-                }
-            }
-            if (!myGame.flameLists.isEmpty()) {
-                for (int i = 0; i < myGame.flameLists.size(); i++) {
-                    if (myGame.flameLists.get(i).isFlaming()) {
-                        myGame.flameLists.get(i).handleFlame();
-                        if (myGame.flameLists.get(i).isEndFlame()) {
-                            myGame.flameLists.remove(i);
-                            myGame.bombLists.remove(i);
-                            i--;
-                            myGame.bombUsed--;
-                            for (int idX = 0; idX < R; idX++) {
-                                for (int idY = 0; idY < C; idY++) {
-                                    if (map1[idX][idY] == -2 || map1[idX][idY] == 3 || map1[idX][idY] == -3) {
-                                        map1[idX][idY] = 0;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            myGame.handle();
             myGame.draw();
         }
     }

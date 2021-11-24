@@ -63,7 +63,7 @@ public class Bomb extends Entities {
                 Sprites.DEFAULT_SIZE, null);
     }
 
-    public void explode(GameBomberMan myGame) {
+    public void explode(BomberMan player) {
         if (exploded) {
             return;
         }
@@ -75,8 +75,8 @@ public class Bomb extends Entities {
             indexAnimationBomb = 2 - cycle % 3;
         }
         currentSprite = bombAnimation[indexAnimationBomb];
-        boolean xOverlaps = (x < myGame.player.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > myGame.player.getX());
-        boolean yOverlaps = (y < myGame.player.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > myGame.player.getY());
+        boolean xOverlaps = (x < player.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > player.getX());
+        boolean yOverlaps = (y < player.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > player.getY());
         if (!(xOverlaps && yOverlaps)) {
             map1[y / DEFAULT_SIZE][x / DEFAULT_SIZE] = 3;
         }
