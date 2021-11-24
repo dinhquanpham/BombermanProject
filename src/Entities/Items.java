@@ -5,7 +5,7 @@ import java.awt.*;
 
 import static Graphics.Sprites.*;
 
-public class Items extends Brick{
+public class Items extends Brick {
     private int index;
     private boolean used;
     public static Sprites[] itemsLists = {

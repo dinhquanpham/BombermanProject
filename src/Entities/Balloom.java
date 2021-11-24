@@ -126,17 +126,11 @@ public class Balloom extends Entities {
         if (e instanceof Flame) {
             if (isDead)return;
             Flame flame = (Flame) e;
-            //check left Right
-            //System.out.println("BOM UP DOWN  " + flame.getUp() + "  " + flame.getDown());
-            //System.out.println("BOM LEFT RIGHT  " + flame.getLeft() + "  " + flame.getRight());
+            //check left right
             boolean xOverlapsLeftRight = (x <= flame.getX() + DEFAULT_SIZE * flame.getRight()) &&
                     (x >= flame.getX() - DEFAULT_SIZE * flame.getLeft());
             boolean yOverlapsLeftRight = (y < flame.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > flame.getY());
-            //System.out.println("BALLOOM : " + x + "   " + y);
-            //System.out.println("LEFT RIGHT: " + (flame.getX() - DEFAULT_SIZE * flame.getLeft()) + " " + (flame.getX() + DEFAULT_SIZE * flame.getRight()));
-            //System.out.println("UP DOWN " + (flame.getY() - DEFAULT_SIZE) + "   " + (flame.getY() + DEFAULT_SIZE));
             if (xOverlapsLeftRight && yOverlapsLeftRight) {
-                //System.out.println("TRUE 1 ");
                 isDead = true;
                 deadTime = (int) System.currentTimeMillis();
                 return;
@@ -145,12 +139,7 @@ public class Balloom extends Entities {
             boolean xOverlapsUpDown = (x < flame.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > flame.getX());
             boolean yOverlapsUpDown = (y <= flame.getY() + DEFAULT_SIZE * flame.getDown()) &&
                     (y >= flame.getY() - DEFAULT_SIZE * flame.getUp());
-            //System.out.println("BALLOOM : " + x + "   " + y);
-            //System.out.println("LEFT RIGHT: " + (flame.getX() - DEFAULT_SIZE) + "   " + (flame.getX() + DEFAULT_SIZE));
-            //System.out.println("UP DOWN: " + (flame.getY() - DEFAULT_SIZE * flame.getUp()) + " " + (flame.getY() + DEFAULT_SIZE * flame.getDown()));
-            //System.out.println("UP RIGHT X  " + xOverlapsUpDown + "  --  Y  " + yOverlapsUpDown);
             if (xOverlapsUpDown && yOverlapsUpDown) {
-                //System.out.println("TRUE 2 ");
                 isDead = true;
                 deadTime = (int) System.currentTimeMillis();
 

@@ -8,7 +8,6 @@ public abstract class Entities {
     protected int y;
 
     protected Sprites currentSprite;
-    private boolean died;
     public int getX() {
         return x;
     }
@@ -27,14 +26,6 @@ public abstract class Entities {
 
     public Sprites getCurrentSprite() {
         return currentSprite;
-    }
-
-    public boolean isDied() {
-        return died;
-    }
-
-    public void setDied(boolean died) {
-        this.died = died;
     }
 
     public void setCurrentSprite(Sprites currentSprite) {
