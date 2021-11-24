@@ -151,6 +151,20 @@ public class GameBomberMan extends JPanel implements KeyListener {
                             flameLists.get(j).check();
                         }
                     }
+                } else {
+                    for (int j = 0; j < bombLists.size(); j++) {
+                        if (j == i)continue;
+                        if (bombLists.get(j).isExploded()) {
+                            bombLists.get(i).collide(flameLists.get(j));
+                            if (bombLists.get(i).isExploded() && !bombLists.get(i).isChecked()) {
+                                bombLists.get(i).setChecked(true);
+                                flameLists.get(i).setExplodedTime((int) System.currentTimeMillis());
+                                flameLists.get(i).setFlaming(true);
+                                flameLists.get(i).check();
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -196,10 +210,10 @@ public class GameBomberMan extends JPanel implements KeyListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             if (player.getPlayerBomb() - bombUsed == 0)return;
-            bombUsed++;
             int bombX = (player.getX() + DEFAULT_SIZE / 2) / DEFAULT_SIZE;
             int bombY = (player.getY() + DEFAULT_SIZE / 2) / DEFAULT_SIZE;
             if (map1[bombY][bombX] == -3)return;
+            bombUsed++;
             map1[bombY][bombX] = -3;
             bombX *= DEFAULT_SIZE;
             bombY *= DEFAULT_SIZE;
