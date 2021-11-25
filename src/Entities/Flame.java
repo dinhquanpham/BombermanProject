@@ -2,11 +2,10 @@ package Entities;
 
 import java.awt.*;
 import Graphics.Sprites;
-import Main.GameBomberMan;
 
 import static Graphics.Sprites.*;
 import static Graphics.Sprites.explosion_vertical_down_last2;
-import static Graphics.TextMap.map1;
+import static Main.GameBomberMan.map;
 
 public class Flame extends Entities{
     private boolean flaming, endFlame;
@@ -129,8 +128,8 @@ public class Flame extends Entities{
 
         // LeftExplosion
         for (int i = 1; i <= left; i++) {
-            if (map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 3 ||
-                    map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == -3)break;
+            if (map[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 3 ||
+                    map[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == -3)break;
             if (i < left) {
                 g.drawImage(flamesAnimationHorizontal[indexAnimationFlames].getImage(), x - DEFAULT_SIZE * i,
                         y, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
@@ -144,8 +143,8 @@ public class Flame extends Entities{
 
         //RightExplosion
         for (int i = 1; i <= right; i++) {
-            if (map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 3 ||
-                    map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == -3)break;
+            if (map[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 3 ||
+                    map[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == -3)break;
             if (i < right) {
                 g.drawImage(flamesAnimationHorizontal[indexAnimationFlames].getImage(), x + DEFAULT_SIZE * i,
                         y, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
@@ -159,8 +158,8 @@ public class Flame extends Entities{
 
         //UpExplosion
         for (int i = 1; i <= up; i++) {
-            if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 3 ||
-                    map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -3)break;
+            if (map[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 3 ||
+                    map[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -3)break;
             if (i < up) {
                 g.drawImage(flamesAnimationVertical[indexAnimationFlames].getImage(), x,
                         y - DEFAULT_SIZE * i, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
@@ -174,8 +173,8 @@ public class Flame extends Entities{
 
         //DownExplosion
         for (int i = 1; i <= down; i++) {
-            if (map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 3 ||
-                    map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -3)break;
+            if (map[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 3 ||
+                    map[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -3)break;
             if (i < down) {
                 g.drawImage(flamesAnimationVertical[indexAnimationFlames].getImage(), x,
                         y + DEFAULT_SIZE * i, Sprites.DEFAULT_SIZE, Sprites.DEFAULT_SIZE, null);
@@ -212,13 +211,13 @@ public class Flame extends Entities{
     public void check() {
         // LeftExplosion
         for (int i = 1; i <= sizeFlames; i++) {
-            if (map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 1 ||
-                    map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == -2) {
+            if (map[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 1 ||
+                    map[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == -2) {
                 break;
             }
-            if (map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2 ||
-                    map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] >= 10) {
-                map1[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] = -2;
+            if (map[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2 ||
+                    map[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] >= 10) {
+                map[y / DEFAULT_SIZE][(x - DEFAULT_SIZE * i) / DEFAULT_SIZE] = -2;
                 left = i;
                 blockLeft = true;
                 break;
@@ -229,13 +228,13 @@ public class Flame extends Entities{
         }
         //RightExplosion
         for (int i = 1; i <= sizeFlames; i++) {
-            if (map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 1 ||
-                    map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == -2) {
+            if (map[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 1 ||
+                    map[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == -2) {
                 break;
             }
-            if (map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2 ||
-                    map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] >= 10) {
-                map1[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] = -2;
+            if (map[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] == 2 ||
+                    map[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] >= 10) {
+                map[y / DEFAULT_SIZE][(x + DEFAULT_SIZE * i) / DEFAULT_SIZE] = -2;
                 right = i;
                 blockRight = true;
                 break;
@@ -246,13 +245,13 @@ public class Flame extends Entities{
         }
         //UpExplosion
         for (int i = 1; i <= sizeFlames; i++) {
-            if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 1 ||
-                    map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -2) {
+            if (map[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 1 ||
+                    map[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -2) {
                 break;
             }
-            if (map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2 ||
-                    map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] >= 10) {
-                map1[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] = -2;
+            if (map[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2 ||
+                    map[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] >= 10) {
+                map[(y - DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] = -2;
                 up = i;
                 blockUp = true;
                 break;
@@ -263,13 +262,13 @@ public class Flame extends Entities{
         }
         //DownExplosion
         for (int i = 1; i <= sizeFlames; i++) {
-            if (map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 1 ||
-                    map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -2) {
+            if (map[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 1 ||
+                    map[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == -2) {
                 break;
             }
-            if (map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2 ||
-                    map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] >= 10) {
-                map1[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] = -2;
+            if (map[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] == 2 ||
+                    map[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] >= 10) {
+                map[(y + DEFAULT_SIZE * i) / DEFAULT_SIZE][x / DEFAULT_SIZE] = -2;
                 down = i;
                 blockDown = true;
                 break;

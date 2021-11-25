@@ -3,8 +3,7 @@ package Entities;
 import java.awt.*;
 import Graphics.Sprites;
 import static Graphics.Sprites.*;
-import static Graphics.TextMap.*;
-import Main.GameBomberMan;
+import static Main.GameBomberMan.map;
 
 
 public class BomberMan extends Entities {
@@ -15,6 +14,8 @@ public class BomberMan extends Entities {
     private int playerSpeed = 1;
     private int playerBomb = 2;
     private int playerFlame = 2;
+    private boolean isDead, isEndDeadAnimation;
+    private int deadTime;
     public static Sprites[] playerAnimationLeft = {
             player_left,
             player_left_1,
@@ -34,6 +35,12 @@ public class BomberMan extends Entities {
             player_down,
             player_down_1,
             player_down_2
+    };
+
+    public static Sprites[] playerAnimationDead = {
+            player_dead1,
+            player_dead2,
+            player_dead3
     };
 
     public BomberMan(int x, int y, Sprites sprite) {
@@ -128,12 +135,45 @@ public class BomberMan extends Entities {
         this.playerFlame = playerFlame;
     }
 
-    @Override
-    public void draw(Graphics g) {
-        g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
-                Sprites.DEFAULT_SIZE, null);
+    public boolean isDead() {
+        return isDead;
     }
 
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public boolean isEndDeadAnimation() {
+        return isEndDeadAnimation;
+    }
+
+    public void setEndDeadAnimation(boolean endDeadAnimation) {
+        isEndDeadAnimation = endDeadAnimation;
+    }
+
+    @Override
+    public void draw(Graphics g) {
+        if (!isDead) {
+            g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
+                    Sprites.DEFAULT_SIZE, null);
+        } else {
+            int existTime = (int) System.currentTimeMillis() - deadTime;
+            if (existTime < 600) {
+                g.drawImage(playerAnimationDead[existTime / 200].getImage(), x, y, Sprites.DEFAULT_SIZE,
+                        Sprites.DEFAULT_SIZE, null);
+            } else {
+                isEndDeadAnimation = true;
+            }
+        }
+    }
+
+    public void resetBomberMan() {
+        playerSpeed = 1;
+        playerBomb = 2;
+        playerFlame = 2;
+        isDead = false;
+        isEndDeadAnimation = false;
+    }
     public boolean isFreeToMove(int nextX, int nextY) {
         int trueNextX_1 = nextX / DEFAULT_SIZE;
         int trueNextY_1 = nextY / DEFAULT_SIZE;
@@ -143,13 +183,14 @@ public class BomberMan extends Entities {
         int trueNextY_3 = (nextY + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
         int trueNextX_4 = (nextX + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
         int trueNextY_4 = (nextY + DEFAULT_SIZE - 1) / DEFAULT_SIZE;
-        return !(map1[trueNextY_1][trueNextX_1] > 0 ||
-                map1[trueNextY_2][trueNextX_2] > 0 ||
-                map1[trueNextY_3][trueNextX_3] > 0 ||
-                map1[trueNextY_4][trueNextX_4] > 0);
+        return !(map[trueNextY_1][trueNextX_1] > 0 ||
+                map[trueNextY_2][trueNextX_2] > 0 ||
+                map[trueNextY_3][trueNextX_3] > 0 ||
+                map[trueNextY_4][trueNextX_4] > 0);
     }
 
     public void move() {
+        if (isDead)return;
         moving = false;
         if (right) {
             int trueSpeed = 0;
@@ -237,6 +278,7 @@ public class BomberMan extends Entities {
 
     @Override
     public void collide(Object e) {
+        if (isDead)return;
         if (e instanceof Items) {
             Items items = (Items) e;
             if (!items.isDestroyed() || items.isUsed())return;
@@ -257,6 +299,35 @@ public class BomberMan extends Entities {
                         break;
                     }
                 }
+            }
+        }
+        if (e instanceof Flame) {
+            Flame flame = (Flame) e;
+            boolean xOverlapsLeftRight = (x <= flame.getX() + DEFAULT_SIZE * flame.getRight()) &&
+                    (x >= flame.getX() - DEFAULT_SIZE * flame.getLeft());
+            boolean yOverlapsLeftRight = (y < flame.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > flame.getY());
+            if (xOverlapsLeftRight && yOverlapsLeftRight) {
+                isDead = true;
+                deadTime = (int) System.currentTimeMillis();
+                return;
+            }
+            // check up down
+            boolean xOverlapsUpDown = (x < flame.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > flame.getX());
+            boolean yOverlapsUpDown = (y <= flame.getY() + DEFAULT_SIZE * flame.getDown()) &&
+                    (y >= flame.getY() - DEFAULT_SIZE * flame.getUp());
+            if (xOverlapsUpDown && yOverlapsUpDown) {
+                isDead = true;
+                deadTime = (int) System.currentTimeMillis();
+                return;
+            }
+        }
+        if (e instanceof Balloom) {
+            Balloom enemy = (Balloom) e;
+            boolean xOverlaps = (x < enemy.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > enemy.getX());
+            boolean yOverlaps = (y < enemy.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > enemy.getY());
+            if (xOverlaps && yOverlaps) {
+                deadTime = (int) System.currentTimeMillis();
+                isDead = true;
             }
         }
     }

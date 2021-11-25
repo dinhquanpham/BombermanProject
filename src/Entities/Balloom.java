@@ -5,7 +5,7 @@ import java.util.Random;
 
 import Graphics.Sprites;
 import static Graphics.Sprites.*;
-import static Graphics.TextMap.map1;
+import static Main.GameBomberMan.map;
 
 public class Balloom extends Entities {
     private int[][] moved = new int[15][31];
@@ -42,8 +42,8 @@ public class Balloom extends Entities {
 
     public void draw(Graphics g) {
         if (!isDead) {
-        g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
-                Sprites.DEFAULT_SIZE, null);
+            g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
+                    Sprites.DEFAULT_SIZE, null);
         } else {
             int existTime = (int) System.currentTimeMillis() - deadTime;
             if (existTime < 300) {
@@ -76,12 +76,12 @@ public class Balloom extends Entities {
         for (int i = 0; i <= 3; i++) {
             int trueNextX = trueX + dx[i];
             int trueNextY = trueY + dy[i];
-            if (map1[trueNextY][trueNextX] != 1 &&
-                    map1[trueNextY][trueNextX] != 10 &&
-                    map1[trueNextY][trueNextX] != 11 &&
-                    map1[trueNextY][trueNextX] != 12 &&
-                    map1[trueNextY][trueNextX] != 2 && map1[trueNextY][trueNextX] != -2 &&
-                    map1[trueNextY][trueNextX] != 3 && map1[trueNextY][trueNextX] != -3 &&
+            if (map[trueNextY][trueNextX] != 1 &&
+                    map[trueNextY][trueNextX] != 10 &&
+                    map[trueNextY][trueNextX] != 11 &&
+                    map[trueNextY][trueNextX] != 12 &&
+                    map[trueNextY][trueNextX] != 2 && map[trueNextY][trueNextX] != -2 &&
+                    map[trueNextY][trueNextX] != 3 && map[trueNextY][trueNextX] != -3 &&
                     moved[trueNextY][trueNextX] != 1) {
                 totalOptions++;
                 options[totalOptions] = i;
@@ -123,8 +123,8 @@ public class Balloom extends Entities {
     }
 
     public void collide(Object e) {
+        if (isDead)return;
         if (e instanceof Flame) {
-            if (isDead)return;
             Flame flame = (Flame) e;
             //check left right
             boolean xOverlapsLeftRight = (x <= flame.getX() + DEFAULT_SIZE * flame.getRight()) &&

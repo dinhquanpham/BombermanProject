@@ -1,13 +1,11 @@
 package Entities;
 
 import Graphics.Sprites;
-import Main.GameBomberMan;
 
 import static Graphics.Sprites.*;
 
 import java.awt.*;
-
-import static Graphics.TextMap.*;
+import static Main.GameBomberMan.map;
 
 public class Bomb extends Entities {
     boolean exploded, checked;
@@ -78,7 +76,7 @@ public class Bomb extends Entities {
         boolean xOverlaps = (x < player.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > player.getX());
         boolean yOverlaps = (y < player.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > player.getY());
         if (!(xOverlaps && yOverlaps)) {
-            map1[y / DEFAULT_SIZE][x / DEFAULT_SIZE] = 3;
+            map[y / DEFAULT_SIZE][x / DEFAULT_SIZE] = 3;
         }
         if (existTime > plantedTiming) {
             exploded = true;

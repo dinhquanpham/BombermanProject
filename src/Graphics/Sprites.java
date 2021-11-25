@@ -55,7 +55,7 @@ public class Sprites {
     public static Sprites grass = new Sprites("Data\\Sprites\\grass.png",16,16);
     public static Sprites brick = new Sprites("Data\\Sprites\\brick.png",16,16);
     public static Sprites wall = new Sprites("Data\\Sprites\\wall.png",16,16);
-    public static Sprites portal = new Sprites("Data\\Sprites\\portal.png",14,14);
+    public static Sprites portal = new Sprites("Data\\Sprites\\portal.png",16,16);
 
     /*
     |--------------------------------------------------------------------------
