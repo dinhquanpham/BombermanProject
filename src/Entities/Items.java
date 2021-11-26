@@ -1,9 +1,13 @@
 package Entities;
 
 import Graphics.Sprites;
+
+import javax.sound.sampled.LineUnavailableException;
 import java.awt.*;
+import java.io.IOException;
 
 import static Graphics.Sprites.*;
+import static Sound.Sound.itemSound;
 
 public class Items extends Brick {
     private int index;
@@ -92,6 +96,11 @@ public class Items extends Brick {
             boolean xOverlaps = (x < player.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > player.getX());
             boolean yOverlaps = (y < player.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > player.getY());
             if (xOverlaps && yOverlaps) {
+                try {
+                    itemSound.playSound(false);
+                } catch (IOException | LineUnavailableException ex) {
+                    ex.printStackTrace();
+                }
                 this.setUsed(true);
             }
         }

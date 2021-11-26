@@ -2,10 +2,15 @@ package Entities;
 
 import Graphics.Sprites;
 
+import javax.sound.sampled.LineUnavailableException;
+
 import static Graphics.Sprites.*;
 
 import java.awt.*;
+import java.io.IOException;
+
 import static Main.GameBomberMan.map;
+import static Sound.Sound.explodedBombSound;
 
 public class Bomb extends Entities {
     boolean exploded, checked;
@@ -61,7 +66,7 @@ public class Bomb extends Entities {
                 Sprites.DEFAULT_SIZE, null);
     }
 
-    public void explode(BomberMan player) {
+    public void explode(BomberMan player) throws LineUnavailableException, IOException {
         if (exploded) {
             return;
         }
@@ -79,6 +84,7 @@ public class Bomb extends Entities {
             map[y / DEFAULT_SIZE][x / DEFAULT_SIZE] = 3;
         }
         if (existTime > plantedTiming) {
+            explodedBombSound.playSound(false);
             exploded = true;
         }
     }

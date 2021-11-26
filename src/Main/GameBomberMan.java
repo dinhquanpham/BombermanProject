@@ -1,21 +1,27 @@
 package Main;
 
 import Entities.*;
+
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static Graphics.Sprites.*;
 import static Graphics.TextMap.*;
+import static Sound.Sound.*;
+
 
 public class GameBomberMan extends JPanel implements KeyListener {
     public static final int R = 15;
     public static final int C = 31;
 
-    public static final int windowWidth = 1512;
-    public static final int windowHeight = 768;
+    public static final int windowWidth = 1500;
+    public static final int windowHeight = 800;
 
 
     // window
@@ -175,7 +181,7 @@ public class GameBomberMan extends JPanel implements KeyListener {
         }
         player.draw(scene.getGraphics());
     }
-    public void handleGame() {
+    public void handleGame() throws IOException, LineUnavailableException{
         player.move();
         if (!bombLists.isEmpty()) {
             for (int i = 0; i < bombLists.size(); i++) {
@@ -262,6 +268,11 @@ public class GameBomberMan extends JPanel implements KeyListener {
             int bombX = (player.getX() + DEFAULT_SIZE / 2) / DEFAULT_SIZE;
             int bombY = (player.getY() + DEFAULT_SIZE / 2) / DEFAULT_SIZE;
             if (map[bombY][bombX] == -3)return;
+            try {
+                newBombSound.playSound(false);
+            } catch (IOException | LineUnavailableException ex) {
+                ex.printStackTrace();
+            }
             usedBomb++;
             map[bombY][bombX] = -3;
             bombX *= DEFAULT_SIZE;
@@ -278,21 +289,41 @@ public class GameBomberMan extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            try {
+                footSound.playSound(false);
+            } catch (IOException | LineUnavailableException ex) {
+                ex.printStackTrace();
+            }
             player.setRight(false);
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            try {
+                footSound.playSound(false);
+            } catch (IOException | LineUnavailableException ex) {
+                ex.printStackTrace();
+            }
             player.setLeft(false);
         }
         if (e.getKeyCode() == KeyEvent.VK_UP) {
+            try {
+                footSound.playSound(false);
+            } catch (IOException | LineUnavailableException ex) {
+                ex.printStackTrace();
+            }
             player.setUp(false);
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            try {
+                footSound.playSound(false);
+            } catch (IOException | LineUnavailableException ex) {
+                ex.printStackTrace();
+            }
             player.setDown(false);
         }
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
         JFrame frame = new JFrame();
         frame.setTitle("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -305,12 +336,24 @@ public class GameBomberMan extends JPanel implements KeyListener {
         frame.addKeyListener(myGame);
         frame.add(myGame);
         frame.setVisible(true);
-
+        try {
+            mapSound.playSound(true);
+        } catch (IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+        long timeSilent = 5;
         while (true) {
+            long startTime = System.currentTimeMillis();
             myGame.handleMap();
             myGame.update();
             myGame.handleGame();
             myGame.draw();
+            long endTime = System.currentTimeMillis();
+            try {
+                Thread.sleep(Math.max(timeSilent + startTime - endTime, 0));
+            } catch(InterruptedException e) {
+                System.out.println("Error");
+            }
         }
     }
 }

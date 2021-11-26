@@ -1,14 +1,21 @@
 package Entities;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
 import Graphics.Sprites;
+import Sound.Sound;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.swing.*;
+
 import static Graphics.Sprites.*;
 import static Main.GameBomberMan.map;
+import static Sound.Sound.mobDiedSound;
 
 
 public class Balloom extends Entities {
@@ -86,6 +93,7 @@ public class Balloom extends Entities {
                         map[trueNextY][trueNextX] != 10 &&
                         map[trueNextY][trueNextX] != 11 &&
                         map[trueNextY][trueNextX] != 12 &&
+                        map[trueNextY][trueNextX] != 69 &&
                         map[trueNextY][trueNextX] != 2 && map[trueNextY][trueNextX] != -2 &&
                         map[trueNextY][trueNextX] != 3 && map[trueNextY][trueNextX] != -3 &&
                         bfs[trueNextY][trueNextX] != 1) {
@@ -114,7 +122,7 @@ public class Balloom extends Entities {
     }
 
     public void move() {
-        if (isDead) return;
+        if (isDead)return;
         int trueX = x / DEFAULT_SIZE;
         int trueY = y / DEFAULT_SIZE;
         if (x % 48 == 0 && y % 48 == 0) {
@@ -133,6 +141,7 @@ public class Balloom extends Entities {
                 indexDirection = 4;
             }
         }
+
         x += dx[indexDirection] * balloomSpeed;
         y += dy[indexDirection] * balloomSpeed;
         int existTime = (int) System.currentTimeMillis();
@@ -149,25 +158,49 @@ public class Balloom extends Entities {
 
     public void collide(Object e) {
         if (e instanceof Flame) {
-            if (isDead)return;
             Flame flame = (Flame) e;
-            //check left right
             boolean xOverlapsLeftRight = (x <= flame.getX() + DEFAULT_SIZE * flame.getRight()) &&
                     (x >= flame.getX() - DEFAULT_SIZE * flame.getLeft());
-            boolean yOverlapsLeftRight = (y < flame.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > flame.getY());
+            boolean yOverlapsLeftRight = (y < flame.getY() + DEFAULT_SIZE) &&
+                    (y > flame.getY() - DEFAULT_SIZE);
             if (xOverlapsLeftRight && yOverlapsLeftRight) {
-                isDead = true;
-                deadTime = (int) System.currentTimeMillis();
-                return;
+                int left = Math.max(x, flame.getX() - DEFAULT_SIZE * flame.getLeft());
+                int right = Math.min(x + DEFAULT_SIZE, flame.getX() + DEFAULT_SIZE + DEFAULT_SIZE * flame.getRight());
+                int bottom = Math.max(y, flame.getY());
+                int top = Math.min(y + DEFAULT_SIZE, flame.getY() + DEFAULT_SIZE);
+                int height = top - bottom;
+                int width = right - left;
+                if (height * width >= DEFAULT_SIZE * DEFAULT_SIZE / 4) {
+                    isDead = true;
+                    deadTime = (int) System.currentTimeMillis();
+                    return;
+                }
             }
             // check up down
-            boolean xOverlapsUpDown = (x < flame.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > flame.getX());
+            boolean xOverlapsUpDown = (x < flame.getX() + DEFAULT_SIZE) &&
+                    (x > flame.getX() - DEFAULT_SIZE);
             boolean yOverlapsUpDown = (y <= flame.getY() + DEFAULT_SIZE * flame.getDown()) &&
                     (y >= flame.getY() - DEFAULT_SIZE * flame.getUp());
             if (xOverlapsUpDown && yOverlapsUpDown) {
-                isDead = true;
+                int left = Math.max(x, flame.getX());
+                int right = Math.min(x + DEFAULT_SIZE, flame.getX() + DEFAULT_SIZE);
+                int bottom = Math.max(y, flame.getY() - DEFAULT_SIZE * flame.getUp());
+                int top = Math.min(y + DEFAULT_SIZE, flame.getY() + DEFAULT_SIZE + DEFAULT_SIZE * flame.getDown());
+                int height = top - bottom;
+                int width = right - left;
+                if (height * width >= DEFAULT_SIZE * DEFAULT_SIZE / 4) {
+                    isDead = true;
+                    deadTime = (int) System.currentTimeMillis();
+                    return;
+                }
+            }
+            if (isDead) {
                 deadTime = (int) System.currentTimeMillis();
-
+                try {
+                    mobDiedSound.playSound(false);
+                } catch (IOException | LineUnavailableException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }

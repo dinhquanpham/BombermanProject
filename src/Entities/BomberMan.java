@@ -189,68 +189,227 @@ public class BomberMan extends Entities {
                 map[trueNextY_4][trueNextX_4] > 0);
     }
 
-    public void move() {
-        if (isDead)return;
-        moving = false;
-        if (right) {
-            int trueSpeed = 0;
-            for (int i = 1; i <= playerSpeed; i++) {
-                if (x >= DEFAULT_SIZE && isFreeToMove(x + i, y)) {
-                    trueSpeed = i;
-                }
-                else {
-                    break;
-                }
+    public void moveRight() {
+        int trueSpeed = 0;
+        int checkY = y % DEFAULT_SIZE;
+        int X = (x + DEFAULT_SIZE) / DEFAULT_SIZE;
+        int Y1 = (y / DEFAULT_SIZE);
+        int Y2 = (y + DEFAULT_SIZE / 2) / DEFAULT_SIZE;
+        int Y3 = (y + DEFAULT_SIZE) / DEFAULT_SIZE;
+        for (int i = 1; i <= playerSpeed; i++) {
+            if (x >= DEFAULT_SIZE && isFreeToMove(x + i, y)) {
+                trueSpeed = i;
             }
+            else {
+                break;
+            }
+        }
+        if (checkY == 0) {
             x += trueSpeed;
             if (trueSpeed > 0) {
                 moving = true;
             }
         }
+    }
 
-        if (left) {
-            int trueSpeed = 0;
-            for (int i = 1; i <= playerSpeed; i++) {
-                if (x >= DEFAULT_SIZE && isFreeToMove(x - i, y)) {
-                    trueSpeed = i;
-                }
-                else {
-                    break;
-                }
+    public void moveLeft() {
+        int trueSpeed = 0;
+        for (int i = 1; i <= playerSpeed; i++) {
+            if (x >= DEFAULT_SIZE && isFreeToMove(x - i, y)) {
+                trueSpeed = i;
             }
-            x -= trueSpeed;
-            if (trueSpeed > 0) {
-                moving = true;
+            else {
+                break;
+            }
+        }
+        x -= trueSpeed;
+        if (trueSpeed > 0) {
+            moving = true;
+        }
+    }
+
+    public void moveUp() {
+        int trueSpeed = 0;
+        for (int i = 1; i <= playerSpeed; i++) {
+            if (x >= DEFAULT_SIZE && isFreeToMove(x, y - i)) {
+                trueSpeed = i;
+            }
+            else {
+                break;
+            }
+        }
+        y -= trueSpeed;
+        if (trueSpeed > 0) {
+            moving = true;
+        }
+    }
+
+    public void moveDown() {
+        int trueSpeed = 0;
+        for (int i = 1; i <= playerSpeed; i++) {
+            if (x >= DEFAULT_SIZE && isFreeToMove(x, y + i)) {
+                trueSpeed = i;
+            }
+            else {
+                break;
+            }
+        }
+        y += trueSpeed;
+        if (trueSpeed > 0) {
+            moving = true;
+        }
+    }
+
+    public void move() {
+        if (isDead)return;
+        moving = false;
+        if (right) {
+            int modY = y % DEFAULT_SIZE;
+            int checkY = y / DEFAULT_SIZE;
+            int checkX = x / DEFAULT_SIZE;
+            int floorY = checkY * DEFAULT_SIZE;
+            int roofY = floorY + DEFAULT_SIZE;
+            if (modY == 0) {
+                moveRight();
+            }
+            else {
+                if (map[checkY + 1][checkX + 1] == 2) {
+                    return;
+                }
+                if (map[checkY][checkX + 1]  == 0) {
+                    if (y < floorY + DEFAULT_SIZE / 2 && y > floorY) {
+                        if (y - playerSpeed >= floorY) {
+                            moveUp();
+                        }
+                        else {
+                            y = floorY;
+                            moveUp();
+                        }
+                    }
+                }
+                if (map[checkY][checkX + 1] == 1) {
+                    if (y > floorY + DEFAULT_SIZE / 2  && y < roofY) {
+                        if (y - playerSpeed >= floorY) {
+                            moveDown();
+                        }
+                        else {
+                            y = floorY;
+                            moveDown();
+                        }
+                    }
+                }
+
+            }
+        }
+        if (left) {
+            int modY = y % DEFAULT_SIZE;
+            int checkY = y / DEFAULT_SIZE;
+            int checkX = x / DEFAULT_SIZE;
+            int floorY = checkY * DEFAULT_SIZE;
+            int roofY = floorY + DEFAULT_SIZE;
+            if (modY == 0) {
+                moveLeft();
+            }
+            else {
+                if (map[checkY + 1][checkX - 1] == 2) {
+                    return;
+                }
+                if (map[checkY][checkX - 1]  == 0) {
+                    if (y < floorY + DEFAULT_SIZE / 2 && y > floorY) {
+                        if (y - playerSpeed >= floorY) {
+                            moveUp();
+                        }
+                        else {
+                            y = floorY;
+                            moveUp();
+                        }
+                    }
+                }
+                if (map[checkY][checkX - 1] == 1) {
+                    if (y > floorY + DEFAULT_SIZE / 2  && y < roofY) {
+                        if (y - playerSpeed >= floorY) {
+                            moveDown();
+                        }
+                        else {
+                            y = floorY;
+                            moveDown();
+                        }
+                    }
+                }
             }
         }
         if (down) {
-            int trueSpeed = 0;
-            for (int i = 1; i <= playerSpeed; i++) {
-                if (x >= DEFAULT_SIZE && isFreeToMove(x, y + i)) {
-                    trueSpeed = i;
-                }
-                else {
-                    break;
-                }
+            int modX = x % DEFAULT_SIZE;
+            int checkY = y / DEFAULT_SIZE;
+            int checkX = x / DEFAULT_SIZE;
+            int floorX = checkX * DEFAULT_SIZE;
+            int roofX = floorX + DEFAULT_SIZE;
+            if (modX == 0) {
+                moveDown();
             }
-            y += trueSpeed;
-            if (trueSpeed > 0) {
-                moving = true;
+            else {
+                if (map[checkY + 1][checkX - 1] == 2) {
+                    return;
+                }
+                if (map[checkY + 1][checkX]  == 0) {
+                    if (x < floorX + DEFAULT_SIZE / 2 && x > floorX) {
+                        if (x - playerSpeed >= floorX) {
+                            moveLeft();
+                        }
+                        else {
+                            x = floorX;
+                            moveLeft();
+                        }
+                    }
+                }
+                if (map[checkY + 1][checkX] == 1) {
+                    if (x > floorX + DEFAULT_SIZE / 2  && x < roofX) {
+                        if (x - playerSpeed >= floorX) {
+                            moveRight();
+                        }
+                        else {
+                            x = floorX;
+                            moveRight();
+                        }
+                    }
+                }
             }
         }
         if (up) {
-            int trueSpeed = 0;
-            for (int i = 1; i <= playerSpeed; i++) {
-                if (x >= DEFAULT_SIZE && isFreeToMove(x, y - i)) {
-                    trueSpeed = i;
-                }
-                else {
-                    break;
-                }
+            int modX = x % DEFAULT_SIZE;
+            int checkY = y / DEFAULT_SIZE;
+            int checkX = x / DEFAULT_SIZE;
+            int floorX = checkX * DEFAULT_SIZE;
+            int roofX = floorX + DEFAULT_SIZE;
+            if (modX == 0) {
+                moveUp();
             }
-            y -= trueSpeed;
-            if (trueSpeed > 0) {
-                moving = true;
+            else {
+                if (map[checkY - 1][checkX + 1] == 2) {
+                    return;
+                }
+                if (map[checkY - 1][checkX]  == 0) {
+                    if (x < floorX + DEFAULT_SIZE / 2 && x > floorX) {
+                        if (x - playerSpeed >= floorX) {
+                            moveLeft();
+                        }
+                        else {
+                            x = floorX;
+                            moveLeft();
+                        }
+                    }
+                }
+                if (map[checkY - 1][checkX] == 1) {
+                    if (x > floorX + DEFAULT_SIZE / 2  && x < roofX) {
+                        if (x - playerSpeed >= floorX) {
+                            moveRight();
+                        }
+                        else {
+                            x = floorX;
+                            moveRight();
+                        }
+                    }
+                }
             }
         }
         if (moving) {
@@ -305,20 +464,38 @@ public class BomberMan extends Entities {
             Flame flame = (Flame) e;
             boolean xOverlapsLeftRight = (x <= flame.getX() + DEFAULT_SIZE * flame.getRight()) &&
                     (x >= flame.getX() - DEFAULT_SIZE * flame.getLeft());
-            boolean yOverlapsLeftRight = (y < flame.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > flame.getY());
+            boolean yOverlapsLeftRight = (y < flame.getY() + DEFAULT_SIZE) &&
+                    (y > flame.getY() - DEFAULT_SIZE);
             if (xOverlapsLeftRight && yOverlapsLeftRight) {
-                isDead = true;
-                deadTime = (int) System.currentTimeMillis();
-                return;
+                int left = Math.max(x, flame.getX() - DEFAULT_SIZE * flame.getLeft());
+                int right = Math.min(x + DEFAULT_SIZE, flame.getX() + DEFAULT_SIZE + DEFAULT_SIZE * flame.getRight());
+                int bottom = Math.max(y, flame.getY());
+                int top = Math.min(y + DEFAULT_SIZE, flame.getY() + DEFAULT_SIZE);
+                int height = top - bottom;
+                int width = right - left;
+                if (height * width >= DEFAULT_SIZE * DEFAULT_SIZE / 4) {
+                    isDead = true;
+                    deadTime = (int) System.currentTimeMillis();
+                    return;
+                }
             }
             // check up down
-            boolean xOverlapsUpDown = (x < flame.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > flame.getX());
+            boolean xOverlapsUpDown = (x < flame.getX() + DEFAULT_SIZE) &&
+                    (x > flame.getX() - DEFAULT_SIZE);
             boolean yOverlapsUpDown = (y <= flame.getY() + DEFAULT_SIZE * flame.getDown()) &&
                     (y >= flame.getY() - DEFAULT_SIZE * flame.getUp());
             if (xOverlapsUpDown && yOverlapsUpDown) {
-                isDead = true;
-                deadTime = (int) System.currentTimeMillis();
-                return;
+                int left = Math.max(x, flame.getX());
+                int right = Math.min(x + DEFAULT_SIZE, flame.getX() + DEFAULT_SIZE);
+                int bottom = Math.max(y, flame.getY() - DEFAULT_SIZE * flame.getUp());
+                int top = Math.min(y + DEFAULT_SIZE, flame.getY() + DEFAULT_SIZE + DEFAULT_SIZE * flame.getDown());
+                int height = top - bottom;
+                int width = right - left;
+                if (height * width >= DEFAULT_SIZE * DEFAULT_SIZE / 4) {
+                    isDead = true;
+                    deadTime = (int) System.currentTimeMillis();
+                    return;
+                }
             }
         }
         if (e instanceof Balloom) {
