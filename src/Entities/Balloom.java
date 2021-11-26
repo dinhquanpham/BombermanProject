@@ -1,23 +1,26 @@
 package Entities;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import Graphics.Sprites;
 import static Graphics.Sprites.*;
 import static Main.GameBomberMan.map;
 
+
 public class Balloom extends Entities {
-    private int[][] moved = new int[15][31];
-    private boolean isDead, isEndAnimation;
-    private int deadTime;
-    private int indexDirection = 0;
-    private int preIndexDirection = 0;
-    private int spawnTime;
+    private int[] destination = new int[2];
+    private ArrayList<Integer> way = new ArrayList<>();
+    private int indexDirection = 4;
     private int indexAnimationBalloom = 0;
     private final int balloomSpeed = 1;
-    private int dx[] = {0, -1, 0, 1};
-    private int dy[] = {-1, 0, 1, 0};
+    private int dx[] = {0, -1, 0, 1, 0};
+    private int dy[] = {-1, 0, 1, 0, 0};
+    private boolean isDead, isEndAnimation;
+    private int deadTime;
 
     public static Sprites[] balloomAnimationLeft = {
             balloom_left1,
@@ -38,6 +41,8 @@ public class Balloom extends Entities {
 
     public Balloom(int x, int y, Sprites sprite) {
         super(x, y, sprite);
+        destination[0] = x / 48;
+        destination[1] = y / 48;
     }
 
     public void draw(Graphics g) {
@@ -63,68 +68,90 @@ public class Balloom extends Entities {
         return isEndAnimation;
     }
 
-    public boolean isFreeToMove(int nextX, int nextY) {
-        // check va cham balloom khac o day
-        return true;
-    }
-
-    public int chooseDirection() {
+    public void bfs() {
+        Queue<int[]> q = new LinkedList<>();
+        ArrayList<int[]> options = new ArrayList<>();
+        int[][] bfs = new int[15][31];
+        int[][] trace = new int[15][31];
         int trueX = x / DEFAULT_SIZE;
         int trueY = y / DEFAULT_SIZE;
-        int options[] = new int[4];
-        int totalOptions = -1;
-        for (int i = 0; i <= 3; i++) {
-            int trueNextX = trueX + dx[i];
-            int trueNextY = trueY + dy[i];
-            if (map[trueNextY][trueNextX] != 1 &&
-                    map[trueNextY][trueNextX] != 10 &&
-                    map[trueNextY][trueNextX] != 11 &&
-                    map[trueNextY][trueNextX] != 12 &&
-                    map[trueNextY][trueNextX] != 2 && map[trueNextY][trueNextX] != -2 &&
-                    map[trueNextY][trueNextX] != 3 && map[trueNextY][trueNextX] != -3 &&
-                    moved[trueNextY][trueNextX] != 1) {
-                totalOptions++;
-                options[totalOptions] = i;
+        int[] u = {trueX, trueY};
+        q.offer(u);
+        bfs[u[1]][u[0]] = 1;
+        while ((u = q.poll()) != null) {
+            for (int i = 0; i <= 3; i++) {
+                int trueNextX = u[0] + dx[i];
+                int trueNextY = u[1] + dy[i];
+                if (map[trueNextY][trueNextX] != 1 &&
+                        map[trueNextY][trueNextX] != 10 &&
+                        map[trueNextY][trueNextX] != 11 &&
+                        map[trueNextY][trueNextX] != 12 &&
+                        map[trueNextY][trueNextX] != 2 && map[trueNextY][trueNextX] != -2 &&
+                        map[trueNextY][trueNextX] != 3 && map[trueNextY][trueNextX] != -3 &&
+                        bfs[trueNextY][trueNextX] != 1) {
+                    int[] v = {trueNextX, trueNextY};
+                    options.add(v);
+                    trace[trueNextY][trueNextX] = i;
+                    q.offer(v);
+                    bfs[trueNextY][trueNextX] = 1;
+                }
             }
         }
-        totalOptions++;
-
-        if (totalOptions > 0) {
-            int rnd = new Random().nextInt(totalOptions);
-            return options[rnd];
+        if(options.size() > 0) {
+            int rand = new Random().nextInt(options.size());
+            destination = options.get(rand);
+        } else {
+            return;
         }
-        return -1;
+        int curX = destination[0];
+        int curY = destination[1];
+        while (curX != trueX || curY != trueY) {
+            int direction = trace[curY][curX];
+            way.add(direction);
+            curX = curX - dx[direction];
+            curY = curY - dy[direction];
+        }
     }
 
     public void move() {
-        if (isDead)return;
         int trueX = x / DEFAULT_SIZE;
         int trueY = y / DEFAULT_SIZE;
         if (x % 48 == 0 && y % 48 == 0) {
-            indexDirection = chooseDirection();
+            if ((trueX == destination[0] && trueY == destination[1])) {
+                bfs();
+                indexDirection = 4;
+            } else {
+                indexDirection = way.get(way.size() - 1);
+                way.remove(way.size() - 1);
+            }
+            int trueNextX = trueX + dx[indexDirection];
+            int trueNextY = trueY + dy[indexDirection];
+            System.out.println(map[trueY][trueX]);
+            if((trueNextX != trueX || trueNextY != trueY) &&
+                    (map[trueNextY][trueNextX] == 3 || map[trueNextY][trueNextX] == -3)) {
+                bfs();
+                System.out.println("stop");
+                indexDirection = 4;
+            }
         }
-        if (indexDirection == -1) {
-            moved[trueY - dy[preIndexDirection]][trueX - dx[preIndexDirection]] = 0;
-            return;
-        } else {
-            preIndexDirection = indexDirection;
-        }
+
         x += dx[indexDirection] * balloomSpeed;
         y += dy[indexDirection] * balloomSpeed;
-        int existTime = (int) System.currentTimeMillis() - spawnTime;
+        int existTime = (int) System.currentTimeMillis();
         int cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
             indexAnimationBalloom = cycle % 3;
         } else {
             indexAnimationBalloom = 2 - cycle % 3;
         }
-        if (indexDirection == 0 || indexDirection == 3) currentSprite = balloomAnimationRight[indexAnimationBalloom];
+        if (indexDirection == 4);
+        else if (indexDirection == 0 || indexDirection == 3) currentSprite = balloomAnimationRight[indexAnimationBalloom];
         else currentSprite = balloomAnimationLeft[indexAnimationBalloom];
     }
 
     public void collide(Object e) {
-        if (isDead)return;
         if (e instanceof Flame) {
+            if (isDead)return;
             Flame flame = (Flame) e;
             //check left right
             boolean xOverlapsLeftRight = (x <= flame.getX() + DEFAULT_SIZE * flame.getRight()) &&
