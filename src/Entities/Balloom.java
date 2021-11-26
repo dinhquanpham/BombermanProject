@@ -114,6 +114,7 @@ public class Balloom extends Entities {
     }
 
     public void move() {
+        if (isDead) return;
         int trueX = x / DEFAULT_SIZE;
         int trueY = y / DEFAULT_SIZE;
         if (x % 48 == 0 && y % 48 == 0) {
@@ -126,15 +127,12 @@ public class Balloom extends Entities {
             }
             int trueNextX = trueX + dx[indexDirection];
             int trueNextY = trueY + dy[indexDirection];
-            System.out.println(map[trueY][trueX]);
             if((trueNextX != trueX || trueNextY != trueY) &&
                     (map[trueNextY][trueNextX] == 3 || map[trueNextY][trueNextX] == -3)) {
                 bfs();
-                System.out.println("stop");
                 indexDirection = 4;
             }
         }
-
         x += dx[indexDirection] * balloomSpeed;
         y += dy[indexDirection] * balloomSpeed;
         int existTime = (int) System.currentTimeMillis();
