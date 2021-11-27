@@ -1,9 +1,15 @@
 package Entities;
 
 import java.awt.*;
+import java.io.IOException;
+
 import Graphics.Sprites;
+
+import javax.sound.sampled.LineUnavailableException;
+
 import static Graphics.Sprites.*;
 import static Main.GameBomberMan.map;
+import static Sound.Sound.footSound;
 
 
 public class BomberMan extends Entities {
@@ -419,6 +425,11 @@ public class BomberMan extends Entities {
                 indexAnimationPlayer++;
                 if (indexAnimationPlayer > 2) {
                     indexAnimationPlayer = 0;
+                    try {
+                        footSound.playSound(false);
+                    } catch (IOException | LineUnavailableException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
             if (right) {

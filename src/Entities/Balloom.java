@@ -8,10 +8,8 @@ import java.util.Queue;
 import java.util.Random;
 
 import Graphics.Sprites;
-import Sound.Sound;
 
 import javax.sound.sampled.LineUnavailableException;
-import javax.swing.*;
 
 import static Graphics.Sprites.*;
 import static Main.GameBomberMan.map;
@@ -27,7 +25,7 @@ public class Balloom extends Entities {
     private int dx[] = {0, -1, 0, 1, 0};
     private int dy[] = {-1, 0, 1, 0, 0};
     private boolean isDead, isEndAnimation;
-    private int deadTime;
+    private int deadTime, getScore = 100;
 
     public static Sprites[] balloomAnimationLeft = {
             balloom_left1,
@@ -59,6 +57,7 @@ public class Balloom extends Entities {
         } else {
             int existTime = (int) System.currentTimeMillis() - deadTime;
             if (existTime < 300) {
+                g.drawString("100", x + DEFAULT_SIZE / 2, y + DEFAULT_SIZE / 2);
                 g.drawImage(balloomAnimationDead[existTime / 100].getImage(), x, y, Sprites.DEFAULT_SIZE,
                         Sprites.DEFAULT_SIZE, null);
             } else {
@@ -73,6 +72,14 @@ public class Balloom extends Entities {
 
     public boolean isEndAnimation() {
         return isEndAnimation;
+    }
+
+    public int getGetScore() {
+        return getScore;
+    }
+
+    public void setGetScore(int getScore) {
+        this.getScore = getScore;
     }
 
     public void bfs() {
@@ -157,6 +164,7 @@ public class Balloom extends Entities {
     }
 
     public void collide(Object e) {
+        if (isDead)return;
         if (e instanceof Flame) {
             Flame flame = (Flame) e;
             boolean xOverlapsLeftRight = (x <= flame.getX() + DEFAULT_SIZE * flame.getRight()) &&
@@ -172,8 +180,6 @@ public class Balloom extends Entities {
                 int width = right - left;
                 if (height * width >= DEFAULT_SIZE * DEFAULT_SIZE / 4) {
                     isDead = true;
-                    deadTime = (int) System.currentTimeMillis();
-                    return;
                 }
             }
             // check up down
@@ -190,8 +196,6 @@ public class Balloom extends Entities {
                 int width = right - left;
                 if (height * width >= DEFAULT_SIZE * DEFAULT_SIZE / 4) {
                     isDead = true;
-                    deadTime = (int) System.currentTimeMillis();
-                    return;
                 }
             }
             if (isDead) {

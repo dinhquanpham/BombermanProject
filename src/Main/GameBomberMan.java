@@ -4,10 +4,12 @@ import Entities.*;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -26,6 +28,9 @@ public class GameBomberMan extends JPanel implements KeyListener {
 
     // window
     public static BufferedImage scene = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
+    public static Font textFont;
+    public static Graphics textFiled = scene.getGraphics();
+    public static int startTime, timeLeft = 0, score = 0;
 
     //map
     public static int [][] map = new int[R][C];
@@ -98,9 +103,14 @@ public class GameBomberMan extends JPanel implements KeyListener {
     }
 
     public void handleMap() {
-        if (switchMap || player.isEndDeadAnimation()) {
+        if (switchMap || player.isEndDeadAnimation() || timeLeft == 0) {
+            if (!switchMap) {
+                score = 0;
+            }
             switchMap = false;
-
+            startTime = (int) System.currentTimeMillis();
+            timeLeft = 180;
+            
             player.setX(playerX);
             player.setY(playerY);
             if(player.isEndDeadAnimation())player.resetBomberMan();
@@ -124,6 +134,13 @@ public class GameBomberMan extends JPanel implements KeyListener {
     }
 
     public void draw() {
+        textFiled.clearRect(0, 725, 1500, 800);
+        textFiled.drawString("Time: ", 20, 755);
+        textFiled.drawString(Integer.toString(timeLeft), 110, 755);
+        int curentTime = (int) System.currentTimeMillis() - startTime;
+        timeLeft = 180 - curentTime / 1000;
+        textFiled.drawString("Score: ", 400, 755);
+        textFiled.drawString(Integer.toString(score), 525, 755);
         this.getGraphics().drawImage(scene, 0, 0, null);
     }
 
@@ -176,6 +193,10 @@ public class GameBomberMan extends JPanel implements KeyListener {
             for (Balloom enemy : enemyLists) {
                 player.collide(enemy);
                 enemy.move();
+                if (enemy.isDead()) {
+                    score += enemy.getGetScore();
+                    enemy.setGetScore(0);
+                }
                 enemy.draw(scene.getGraphics());
             }
         }
@@ -289,47 +310,38 @@ public class GameBomberMan extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            try {
-                footSound.playSound(false);
-            } catch (IOException | LineUnavailableException ex) {
-                ex.printStackTrace();
-            }
+
             player.setRight(false);
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            try {
-                footSound.playSound(false);
-            } catch (IOException | LineUnavailableException ex) {
-                ex.printStackTrace();
-            }
             player.setLeft(false);
         }
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-            try {
-                footSound.playSound(false);
-            } catch (IOException | LineUnavailableException ex) {
-                ex.printStackTrace();
-            }
             player.setUp(false);
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            try {
-                footSound.playSound(false);
-            } catch (IOException | LineUnavailableException ex) {
-                ex.printStackTrace();
-            }
             player.setDown(false);
         }
 
     }
 
-    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
+    public static void main(String[] args) throws IOException, LineUnavailableException{
         JFrame frame = new JFrame();
         frame.setTitle("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocation(50, 50);
         frame.setSize(windowWidth, windowHeight);
+
+        String path = System.getProperty("user.dir") + "\\Data\\Font\\EightBitDragon-anqx.ttf";
+        try {
+            textFont = Font.createFont(Font.TRUETYPE_FONT,
+                    new FileInputStream(new File(path))).deriveFont(Font.PLAIN, 30);
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        }
+        textFiled.setFont(textFont);
+
         GameBomberMan myGame = new GameBomberMan();
         frame.setFocusable(true);
         myGame.requestFocusInWindow();
