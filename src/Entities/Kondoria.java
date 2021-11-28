@@ -16,35 +16,35 @@ import static Main.GameBomberMan.map;
 import static Sound.Sound.mobDiedSound;
 
 
-public class Balloom extends Entities {
+public class Kondoria extends Entities {
     private int[] destination = new int[2];
     private ArrayList<Integer> way = new ArrayList<>();
     private int indexDirection = 4;
-    private int indexAnimationBalloom = 0;
-    private final int balloomSpeed = 1;
+    private int indexAnimationKondoria = 0;
+    private int kondoriaSpeed = 1;
     private int dx[] = {0, -1, 0, 1, 0};
     private int dy[] = {-1, 0, 1, 0, 0};
     private boolean isDead, isEndAnimation;
-    private int deadTime, getScore = 100;
+    private int deadTime, getScore = 500;
 
-    public static Sprites[] balloomAnimationLeft = {
-            balloom_left1,
-            balloom_left2,
-            balloom_left3
+    public static Sprites[] kondoriaAnimationLeft = {
+            kondoria_left1,
+            kondoria_left2,
+            kondoria_left3
     };
 
-    public static Sprites[] balloomAnimationRight = {
-            balloom_right1,
-            balloom_right2,
-            balloom_right3
+    public static Sprites[] kondoriaAnimationRight = {
+            kondoria_right1,
+            kondoria_right2,
+            kondoria_right3
     };
-    public static Sprites[] balloomAnimationDead = {
+    public static Sprites[] kondoriaAnimationDead = {
             mob_dead1,
             mob_dead2,
             mob_dead3
     };
 
-    public Balloom(int x, int y, Sprites sprite) {
+    public Kondoria(int x, int y, Sprites sprite) {
         super(x, y, sprite);
         destination[0] = x / 48;
         destination[1] = y / 48;
@@ -58,8 +58,8 @@ public class Balloom extends Entities {
         } else {
             int existTime = (int) System.currentTimeMillis() - deadTime;
             if (existTime < 300) {
-                g.drawString("100", x + DEFAULT_SIZE / 2, y + DEFAULT_SIZE / 2);
-                g.drawImage(balloomAnimationDead[existTime / 100].getImage(), x, y, Sprites.DEFAULT_SIZE,
+                g.drawString("500", x + DEFAULT_SIZE / 2, y + DEFAULT_SIZE / 2);
+                g.drawImage(kondoriaAnimationDead[existTime / 100].getImage(), x, y, Sprites.DEFAULT_SIZE,
                         Sprites.DEFAULT_SIZE, null);
             } else {
                 isEndAnimation = true;
@@ -98,11 +98,6 @@ public class Balloom extends Entities {
                 int trueNextX = u[0] + dx[i];
                 int trueNextY = u[1] + dy[i];
                 if (map[trueNextY][trueNextX] != 1 &&
-                        map[trueNextY][trueNextX] != 10 &&
-                        map[trueNextY][trueNextX] != 11 &&
-                        map[trueNextY][trueNextX] != 12 &&
-                        map[trueNextY][trueNextX] != 69 &&
-                        map[trueNextY][trueNextX] != 2 && map[trueNextY][trueNextX] != -2 &&
                         map[trueNextY][trueNextX] != 3 && map[trueNextY][trueNextX] != -3 &&
                         bfs[trueNextY][trueNextX] != 1) {
                     int[] v = {trueNextX, trueNextY};
@@ -115,6 +110,7 @@ public class Balloom extends Entities {
         }
         if(options.size() > 0) {
             int rand = new Random().nextInt(options.size());
+            //kondoriaSpeed = new Random().nextInt(2);
             destination = options.get(rand);
         } else {
             return;
@@ -150,18 +146,18 @@ public class Balloom extends Entities {
             }
         }
 
-        x += dx[indexDirection] * balloomSpeed;
-        y += dy[indexDirection] * balloomSpeed;
+        x += dx[indexDirection] * kondoriaSpeed;
+        y += dy[indexDirection] * kondoriaSpeed;
         int existTime = (int) System.currentTimeMillis();
         int cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
-            indexAnimationBalloom = cycle % 3;
+            indexAnimationKondoria = cycle % 3;
         } else {
-            indexAnimationBalloom = 2 - cycle % 3;
+            indexAnimationKondoria = 2 - cycle % 3;
         }
         if (indexDirection == 4);
-        else if (indexDirection == 0 || indexDirection == 3) currentSprite = balloomAnimationRight[indexAnimationBalloom];
-        else currentSprite = balloomAnimationLeft[indexAnimationBalloom];
+        else if (indexDirection == 0 || indexDirection == 3) currentSprite = kondoriaAnimationRight[indexAnimationKondoria];
+        else currentSprite = kondoriaAnimationLeft[indexAnimationKondoria];
     }
 
     public void collide(Object e) {

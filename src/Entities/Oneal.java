@@ -16,35 +16,35 @@ import static Main.GameBomberMan.map;
 import static Sound.Sound.mobDiedSound;
 
 
-public class Balloom extends Entities {
+public class Oneal extends Entities {
     private int[] destination = new int[2];
     private ArrayList<Integer> way = new ArrayList<>();
     private int indexDirection = 4;
     private int indexAnimationBalloom = 0;
-    private final int balloomSpeed = 1;
+    private int onealSpeed = 1;
     private int dx[] = {0, -1, 0, 1, 0};
     private int dy[] = {-1, 0, 1, 0, 0};
     private boolean isDead, isEndAnimation;
-    private int deadTime, getScore = 100;
+    private int deadTime, getScore = 200;
 
-    public static Sprites[] balloomAnimationLeft = {
-            balloom_left1,
-            balloom_left2,
-            balloom_left3
+    public static Sprites[] onealAnimationLeft = {
+            oneal_left1,
+            oneal_left2,
+            oneal_left3
     };
 
-    public static Sprites[] balloomAnimationRight = {
-            balloom_right1,
-            balloom_right2,
-            balloom_right3
+    public static Sprites[] onealAnimationRight = {
+            oneal_right1,
+            oneal_right2,
+            oneal_right3
     };
-    public static Sprites[] balloomAnimationDead = {
+    public static Sprites[] onealAnimationDead = {
             mob_dead1,
             mob_dead2,
             mob_dead3
     };
 
-    public Balloom(int x, int y, Sprites sprite) {
+    public Oneal(int x, int y, Sprites sprite) {
         super(x, y, sprite);
         destination[0] = x / 48;
         destination[1] = y / 48;
@@ -58,8 +58,8 @@ public class Balloom extends Entities {
         } else {
             int existTime = (int) System.currentTimeMillis() - deadTime;
             if (existTime < 300) {
-                g.drawString("100", x + DEFAULT_SIZE / 2, y + DEFAULT_SIZE / 2);
-                g.drawImage(balloomAnimationDead[existTime / 100].getImage(), x, y, Sprites.DEFAULT_SIZE,
+                g.drawString("200", x + DEFAULT_SIZE / 2, y + DEFAULT_SIZE / 2);
+                g.drawImage(onealAnimationDead[existTime / 100].getImage(), x, y, Sprites.DEFAULT_SIZE,
                         Sprites.DEFAULT_SIZE, null);
             } else {
                 isEndAnimation = true;
@@ -115,6 +115,7 @@ public class Balloom extends Entities {
         }
         if(options.size() > 0) {
             int rand = new Random().nextInt(options.size());
+            //onealSpeed = new Random().nextInt(2);
             destination = options.get(rand);
         } else {
             return;
@@ -150,8 +151,8 @@ public class Balloom extends Entities {
             }
         }
 
-        x += dx[indexDirection] * balloomSpeed;
-        y += dy[indexDirection] * balloomSpeed;
+        x += dx[indexDirection] * onealSpeed;
+        y += dy[indexDirection] * onealSpeed;
         int existTime = (int) System.currentTimeMillis();
         int cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
@@ -160,8 +161,8 @@ public class Balloom extends Entities {
             indexAnimationBalloom = 2 - cycle % 3;
         }
         if (indexDirection == 4);
-        else if (indexDirection == 0 || indexDirection == 3) currentSprite = balloomAnimationRight[indexAnimationBalloom];
-        else currentSprite = balloomAnimationLeft[indexAnimationBalloom];
+        else if (indexDirection == 0 || indexDirection == 3) currentSprite = onealAnimationRight[indexAnimationBalloom];
+        else currentSprite = onealAnimationLeft[indexAnimationBalloom];
     }
 
     public void collide(Object e) {

@@ -209,4 +209,9 @@ public class Sprites {
     public static Sprites mob_dead1 = new Sprites("Data\\Sprites\\mob_dead1.png", 16, 16);
     public static Sprites mob_dead2 = new Sprites("Data\\Sprites\\mob_dead2.png", 16, 16);
     public static Sprites mob_dead3 = new Sprites("Data\\Sprites\\mob_dead3.png", 16, 16);
+
+    //Other
+    public static Sprites menu_background = new Sprites("Data\\Sprites\\menu_background.png", 1600, 900);
+    public static Sprites play_button1 = new Sprites("Data\\Sprites\\play_button1.png", 118, 58);
+    public static Sprites play_button2 = new Sprites("Data\\Sprites\\play_button2.png", 118, 58);
 }

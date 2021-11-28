@@ -71,15 +71,15 @@ public class CreateMap extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        int y = e.getY() / 48;
-        int x = e.getX() / 48;
-        if (y == 0 && x == 0) indexMateria = 0;
-        else if (y == 0 && x == 1) indexMateria = 1;
-        else if (y == 0 && x == 2) indexMateria = 2;
-        else if (y == 14 && x == 30) printMap();
-        else if (e.getButton() == MouseEvent.BUTTON3) exampleMap[y][x] = 0;
-        else if (e.getButton() == MouseEvent.BUTTON2) exampleMap[y][x] = 2;
-        else exampleMap[y][x] = indexMateria;
+        int trueY = e.getY() / 48;
+        int trueX = e.getX() / 48;
+        if (trueY == 0 && trueX == 0) indexMateria = 0;
+        else if (trueY == 0 && trueX == 1) indexMateria = 1;
+        else if (trueY == 0 && trueX == 2) indexMateria = 2;
+        else if (trueY == 14 && trueX == 30) printMap();
+        else if (e.getButton() == MouseEvent.BUTTON3) exampleMap[trueY][trueX] = 0;
+        else if (e.getButton() == MouseEvent.BUTTON2) exampleMap[trueY][trueX] = 2;
+        else exampleMap[trueY][trueX] = indexMateria;
     }
 
     @Override

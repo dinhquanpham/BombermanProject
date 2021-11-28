@@ -518,5 +518,23 @@ public class BomberMan extends Entities {
                 isDead = true;
             }
         }
+        if (e instanceof Oneal) {
+            Oneal enemy = (Oneal) e;
+            boolean xOverlaps = (x < enemy.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > enemy.getX());
+            boolean yOverlaps = (y < enemy.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > enemy.getY());
+            if (xOverlaps && yOverlaps) {
+                deadTime = (int) System.currentTimeMillis();
+                isDead = true;
+            }
+        }
+        if (e instanceof Kondoria) {
+            Kondoria enemy = (Kondoria) e;
+            boolean xOverlaps = (x < enemy.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > enemy.getX());
+            boolean yOverlaps = (y < enemy.getY() + DEFAULT_SIZE) && (y + DEFAULT_SIZE > enemy.getY());
+            if (xOverlaps && yOverlaps) {
+                deadTime = (int) System.currentTimeMillis();
+                isDead = true;
+            }
+        }
     }
 }

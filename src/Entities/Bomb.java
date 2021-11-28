@@ -85,6 +85,7 @@ public class Bomb extends Entities {
         }
         if (existTime > plantedTiming) {
             explodedBombSound.playSound(false);
+            System.out.println("LOI SOUND");
             exploded = true;
         }
     }
@@ -103,6 +104,12 @@ public class Bomb extends Entities {
                     || (rightBomb == 0 && leftBomb == 0 && 0 <= upBomb && upBomb <= flame.getUp())
                     || (rightBomb == 0 && leftBomb == 0 && 0 <= downBomb && downBomb <= flame.getDown())) {
                 exploded = true;
+                try {
+                    explodedBombSound.playSound(false);
+                } catch (IOException | LineUnavailableException ex) {
+                    ex.printStackTrace();
+                    System.out.println("LOI SOUND");
+                }
             }
         }
     }
