@@ -12,8 +12,11 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
 
 import Graphics.Sprites;
 import static Graphics.Sprites.*;
@@ -51,6 +54,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     private final ArrayList<Balloom> balloomList = new ArrayList<Balloom>();
     private final ArrayList<Oneal> onealList = new ArrayList<Oneal>();
     private final ArrayList<Kondoria> kondoriaList = new ArrayList<Kondoria>();
+    private static final ArrayList<Integer> scoreList = new ArrayList<Integer>();
     //enemies
     Entities [][] object = new Entities[R][C];
     int usedBomb = 0;
@@ -117,14 +121,19 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     }
 
     public void handleMap() {
+        BufferedImage black_background = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
+        scene.getGraphics().drawImage(black_background, 0, 0, windowWidth, windowHeight, null);
         if (switchMap || player.isEndDeadAnimation() || timeLeft == 0) {
+            if (currentMap == 3 || player.isEndDeadAnimation()) {
+                gameStatus = 3;
+            }
             if (!switchMap) {
                 score = 0;
             }
             switchMap = false;
             startTime = (int) System.currentTimeMillis();
             timeLeft = 180;
-            
+
             player.setX(playerX);
             player.setY(playerY);
             if(player.isEndDeadAnimation())player.resetBomberMan();
@@ -150,6 +159,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     }
 
     public void printScore() {
+        textFiled.setColor(Color.white);
         textFiled.clearRect(0, 725, windowWidth, windowHeight);
         textFiled.drawString("Time: ", 20, 755);
         textFiled.drawString(Integer.toString(timeLeft), 110, 755);
@@ -166,8 +176,6 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     }
 
     public void update() {
-        BufferedImage black_background = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
-        scene.getGraphics().drawImage(black_background, 0, 0, windowWidth, windowHeight, null);
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
                 if (!flameLists.isEmpty()) {
@@ -388,8 +396,21 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
             play_button1,
             play_button2
     };
-    public static boolean pb_pressed = false;
-    public static int pb_index = 0;
+    public static Sprites[] score_button = {
+            play_button1,
+            play_button2
+    };
+    public static Sprites[] back_button = {
+            play_button1,
+            play_button2
+    };
+    public static int menu_pressed = 0;
+    public static int score_pressed = 0;
+    public static int end_pressed = 0;
+    public static int play_index = 0;
+    public static int score_index = 0;
+    public static int back_index = 0;
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -400,25 +421,90 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     public void mousePressed(MouseEvent e) {
         int y = e.getY();
         int x = e.getX();
-        if (gameStatus == 0) {
-            if (x >= (windowWidth - 118 ) / 2 && x <= (windowWidth + 118) / 2 &&
-                    y >= (windowHeight - 58) / 2 && y <= (windowHeight + 58) / 2) {
-                pb_pressed = true;
-                pb_index = 1;
+        switch (gameStatus) {
+            case 0: {
+                if (x >= (windowWidth - 118) / 2 && x <= (windowWidth + 118) / 2 &&
+                        y >= (windowHeight - 58) / 2 && y <= (windowHeight + 58) / 2) {
+                    menu_pressed = 1;
+                    play_index = 1;
+                }
+                if (x >= (windowWidth - 118) / 2 && x <= (windowWidth + 118) / 2 &&
+                        y >= (windowHeight - 58) * 3 / 4 && y <= (windowHeight + 58) * 3 / 4) {
+                    menu_pressed = 2;
+                    score_index = 1;
+                }
+                break;
+            }
+            case 1:
+                break;
+            case 2: {
+                if (x >= 0 && x <= 118 &&
+                        y >= 0 && y <= 58) {
+                    score_pressed = 1;
+                    back_index = 1;
+                }
+                break;
+            }
+            case 3: {
+                if (x >= 0 && x <= 118 &&
+                        y >= 0 && y <= 58) {
+                    end_pressed = 1;
+                    back_index = 1;
+                }
+                break;
             }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (gameStatus == 0) {
-            if (pb_pressed) {
-                pb_pressed = true;
-                pb_index = 1;
-                gameStatus = 1;
+        switch (gameStatus) {
+            case 0: {
+                switch (menu_pressed) {
+                    case 0:
+                        break;
+                    case 1: {
+                        menu_pressed = 0;
+                        play_index = 0;
+                        gameStatus = 1;
+                        break;
+                    }
+                    case 2: {
+                        menu_pressed = 0;
+                        score_index = 0;
+                        gameStatus = 2;
+                        break;
+                    }
+                }
+                break;
+            }
+            case 1:
+                break;
+            case 2: {
+                switch (score_pressed) {
+                    case 0:
+                        break;
+                    case 1: {
+                        score_pressed = 0;
+                        back_index = 0;
+                        gameStatus = 0;
+                        break;
+                    }
+                }
+            }
+            case 3: {
+                switch (end_pressed) {
+                    case 0:
+                        break;
+                    case 1: {
+                        end_pressed = 0;
+                        back_index = 0;
+                        gameStatus = 0;
+                        break;
+                    }
+                }
             }
         }
-
     }
 
     @Override
@@ -433,9 +519,50 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
 
     public void menu() {
         scene.getGraphics().drawImage(menu_background.getImage(), 0, 0, windowWidth, windowHeight, null);
-        scene.getGraphics().drawImage(play_button[pb_index].getImage(), (windowWidth - 118) / 2, (windowHeight - 58) / 2, null);
+        scene.getGraphics().drawImage(play_button[play_index].getImage(), (windowWidth - 118) / 2, (windowHeight - 58) / 2, null);
+        scene.getGraphics().drawImage(score_button[score_index].getImage(), (windowWidth - 118) / 2, (windowHeight - 58) * 3 / 4, null);
     }
 
+    public void showHighScore() {
+        Collections.sort(scoreList);
+        Collections.reverse(scoreList);
+        scene.getGraphics().drawImage(menu_background.getImage(), 0, 0, windowWidth, windowHeight, null);
+        scene.getGraphics().drawImage(back_button[back_index].getImage(), 0, 0, null);
+        textFiled.setColor(Color.black);
+        textFiled.drawString("High score: ", 400, 355);
+        for (int i = 0; i < Math.min(scoreList.size(), 5); i++) {
+            textFiled.drawString(Integer.toString(scoreList.get(i)), 400, 400 + 35 * i);
+        }
+        // show high score
+    }
+
+    public void endGame() {
+        scene.getGraphics().drawImage(menu_background.getImage(), 0, 0, windowWidth, windowHeight, null);
+        scene.getGraphics().drawImage(back_button[back_index].getImage(), 0, 0, null);
+        textFiled.setColor(Color.black);
+        textFiled.drawString("Your score: ", 300, 455);
+        textFiled.drawString(Integer.toString(score), 525, 455);
+        // show score
+    }
+
+    public static void loadScoreFromFile() throws FileNotFoundException {
+        String path = System.getProperty("user.dir") + "\\Data\\Score\\score.txt";
+        FileInputStream fileInputStream = new FileInputStream(path);
+        Scanner scanner = new Scanner(fileInputStream);
+        try {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                scoreList.add(Integer.parseInt(line));
+            }
+        } finally {
+            try {
+                scanner.close();
+                fileInputStream.close();
+            } catch (IOException ex) {
+                System.out.println("LOI DOC FILE");
+            }
+        }
+    }
     public static void main(String[] args) throws IOException, LineUnavailableException{
         JFrame frame = new JFrame();
         frame.setTitle("Bomberman");
@@ -443,7 +570,9 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         frame.setResizable(true);
         frame.setLocation(50, 50);
         frame.setSize(windowWidth, windowHeight);
+
         loadMapFromFile();
+        loadScoreFromFile();
         String path = System.getProperty("user.dir") + "\\Data\\Font\\EightBitDragon-anqx.ttf";
         try {
             textFont = Font.createFont(Font.TRUETYPE_FONT,
@@ -462,25 +591,34 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         frame.add(myGame);
         frame.pack();
         frame.setVisible(true);
-        /*
         try {
             mapSound.playSound(true);
         } catch (IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
-         */
         long timeSilent = 5;
         while (true) {
             long startTime = System.currentTimeMillis();
             switch (gameStatus) {
-                case 0:
+                case 0: {
                     myGame.menu();
                     break;
-                case 1:
+                }
+                case 1: {
                     myGame.handleMap();
                     myGame.update();
                     myGame.handleGame();
                     myGame.printScore();
+                    break;
+                }
+                case 2: {
+                    myGame.showHighScore();
+                    break;
+                }
+                case 3: {
+                    myGame.endGame();
+                    break;
+                }
             }
             myGame.draw();
             long endTime = System.currentTimeMillis();
