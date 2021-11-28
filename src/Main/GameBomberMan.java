@@ -166,6 +166,8 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     }
 
     public void update() {
+        BufferedImage black_background = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
+        scene.getGraphics().drawImage(black_background, 0, 0, windowWidth, windowHeight, null);
         for (int i = 0; i < R; i++) {
             for (int j = 0; j < C; j++) {
                 if (!flameLists.isEmpty()) {
@@ -414,8 +416,6 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                 pb_pressed = true;
                 pb_index = 1;
                 gameStatus = 1;
-                BufferedImage black_background = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
-                scene.getGraphics().drawImage(black_background, 0, 0, windowWidth, windowHeight, null);
             }
         }
 
@@ -443,7 +443,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         frame.setResizable(true);
         frame.setLocation(50, 50);
         frame.setSize(windowWidth, windowHeight);
-
+        loadMapFromFile();
         String path = System.getProperty("user.dir") + "\\Data\\Font\\EightBitDragon-anqx.ttf";
         try {
             textFont = Font.createFont(Font.TRUETYPE_FONT,
@@ -462,11 +462,13 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         frame.add(myGame);
         frame.pack();
         frame.setVisible(true);
+        /*
         try {
             mapSound.playSound(true);
         } catch (IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
+         */
         long timeSilent = 5;
         while (true) {
             long startTime = System.currentTimeMillis();

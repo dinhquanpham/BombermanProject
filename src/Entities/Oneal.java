@@ -20,8 +20,8 @@ public class Oneal extends Entities {
     private int[] destination = new int[2];
     private ArrayList<Integer> way = new ArrayList<>();
     private int indexDirection = 4;
-    private int indexAnimationBalloom = 0;
-    private int onealSpeed = 1;
+    private int indexAnimationOneal = 0;
+    private int onealSpeed = 2;
     private int dx[] = {0, -1, 0, 1, 0};
     private int dy[] = {-1, 0, 1, 0, 0};
     private boolean isDead, isEndAnimation;
@@ -156,13 +156,13 @@ public class Oneal extends Entities {
         int existTime = (int) System.currentTimeMillis();
         int cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
-            indexAnimationBalloom = cycle % 3;
+            indexAnimationOneal = cycle % 3;
         } else {
-            indexAnimationBalloom = 2 - cycle % 3;
+            indexAnimationOneal = 2 - cycle % 3;
         }
         if (indexDirection == 4);
-        else if (indexDirection == 0 || indexDirection == 3) currentSprite = onealAnimationRight[indexAnimationBalloom];
-        else currentSprite = onealAnimationLeft[indexAnimationBalloom];
+        else if (indexDirection == 0 || indexDirection == 3) currentSprite = onealAnimationRight[indexAnimationOneal];
+        else currentSprite = onealAnimationLeft[indexAnimationOneal];
     }
 
     public void collide(Object e) {

@@ -39,7 +39,6 @@ public class Portal extends Brick {
     @Override
     public void collide(Object e) {
         if (e instanceof Flame) {
-            if (isDestroyed())return;
             Flame flame = (Flame) e;
             int upBrick = (flame.getY() - y) / DEFAULT_SIZE;
             int downBrick = (y - flame.getY()) / DEFAULT_SIZE;
@@ -49,7 +48,7 @@ public class Portal extends Brick {
                     || (upBrick == 0 && downBrick == 0 && leftBrick == flame.getLeft())
                     || (rightBrick == 0 && leftBrick == 0 && upBrick == flame.getUp())
                     || (rightBrick == 0 && leftBrick == 0 && downBrick == flame.getDown())) {
-                this.setDestroyed(true);
+                    this.setDestroyed(true);
             }
         }
         if (e instanceof BomberMan) {

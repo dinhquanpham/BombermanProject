@@ -52,7 +52,6 @@ public class Kondoria extends Entities {
 
     public void draw(Graphics g) {
         if (!isDead) {
-
             g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
                     Sprites.DEFAULT_SIZE, null);
         } else {
