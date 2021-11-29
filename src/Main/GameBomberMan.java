@@ -10,10 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -37,7 +34,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     public static BufferedImage scene = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
     public static Font textFont;
     public static Graphics textFiled = scene.getGraphics();
-    public static int startTime, timeLeft = 0, score = 0;
+    public static int startTime, timeLeft = 0, score = 0, endScore = 0, showScore;
 
     //map
     public static int [][] map = new int[R][C];
@@ -124,6 +121,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         BufferedImage black_background = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
         scene.getGraphics().drawImage(black_background, 0, 0, windowWidth, windowHeight, null);
         if (switchMap || player.isEndDeadAnimation() || timeLeft == 0) {
+            endScore = score;
             if (currentMap == 3 || player.isEndDeadAnimation()) {
                 gameStatus = 3;
             }
@@ -531,17 +529,28 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         textFiled.setColor(Color.black);
         textFiled.drawString("High score: ", 400, 355);
         for (int i = 0; i < Math.min(scoreList.size(), 5); i++) {
+            if (scoreList.get(i) == 0)break;
             textFiled.drawString(Integer.toString(scoreList.get(i)), 400, 400 + 35 * i);
         }
         // show high score
     }
 
-    public void endGame() {
+    public void endGame() throws IOException {
+        if (endScore != -1)showScore = endScore;
         scene.getGraphics().drawImage(menu_background.getImage(), 0, 0, windowWidth, windowHeight, null);
         scene.getGraphics().drawImage(back_button[back_index].getImage(), 0, 0, null);
         textFiled.setColor(Color.black);
         textFiled.drawString("Your score: ", 300, 455);
-        textFiled.drawString(Integer.toString(score), 525, 455);
+        textFiled.drawString(Integer.toString(showScore), 525, 455);
+        if(endScore == -1)return;
+        scoreList.add(showScore);
+        File file =new File(System.getProperty("user.dir") + "\\Data\\Score\\score.txt");
+        FileWriter fw = new FileWriter(file,true);
+        //BufferedWriter writer give better performance
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(Integer.toString(showScore) + "\n");
+        endScore = -1;
+        bw.close();
         // show score
     }
 
