@@ -115,7 +115,7 @@ public class Oneal extends Entities {
         }
         if(options.size() > 0) {
             int rand = new Random().nextInt(options.size());
-            //onealSpeed = new Random().nextInt(2);
+            onealSpeed = new Random().nextInt(2) + 1;
             destination = options.get(rand);
         } else {
             return;
@@ -131,7 +131,7 @@ public class Oneal extends Entities {
     }
 
     public void move() {
-        if (isDead)return;
+        if (isDead) return;
         int trueX = x / DEFAULT_SIZE;
         int trueY = y / DEFAULT_SIZE;
         if (x % 48 == 0 && y % 48 == 0) {
@@ -151,8 +151,13 @@ public class Oneal extends Entities {
             }
         }
 
-        x += dx[indexDirection] * onealSpeed;
-        y += dy[indexDirection] * onealSpeed;
+        if ((x + dx[indexDirection]) % 48 == 0 && (y + dy[indexDirection]) % 48 == 0) {
+            x += dx[indexDirection];
+            y += dy[indexDirection];
+        } else {
+            x += dx[indexDirection] * onealSpeed;
+            y += dy[indexDirection] * onealSpeed;
+        }
         int existTime = (int) System.currentTimeMillis();
         int cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {

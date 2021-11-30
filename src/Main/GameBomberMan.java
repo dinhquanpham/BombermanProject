@@ -395,8 +395,8 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
             play_button2
     };
     public static Sprites[] score_button = {
-            play_button1,
-            play_button2
+            score_button1,
+            score_button2
     };
     public static Sprites[] back_button = {
             play_button1,
@@ -409,7 +409,6 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     public static int score_index = 0;
     public static int back_index = 0;
 
-
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -421,13 +420,17 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         int x = e.getX();
         switch (gameStatus) {
             case 0: {
-                if (x >= (windowWidth - 118) / 2 && x <= (windowWidth + 118) / 2 &&
-                        y >= (windowHeight - 58) / 2 && y <= (windowHeight + 58) / 2) {
+                if (x >= (windowWidth - play_button1.getWidth()) / 2 &&
+                        x <= (windowWidth + play_button1.getWidth()) / 2 &&
+                        y >= (windowHeight - play_button1.getHeight()) / 2 &&
+                        y <= (windowHeight + play_button1.getHeight()) / 2) {
                     menu_pressed = 1;
                     play_index = 1;
                 }
-                if (x >= (windowWidth - 118) / 2 && x <= (windowWidth + 118) / 2 &&
-                        y >= (windowHeight - 58) * 3 / 4 && y <= (windowHeight + 58) * 3 / 4) {
+                if (x >= (windowWidth - score_button1.getWidth()) / 2 &&
+                        x <= (windowWidth + score_button1.getWidth()) / 2 &&
+                        y >= (windowHeight - score_button1.getHeight()) * 2 / 3 &&
+                        y <= (windowHeight + score_button1.getHeight()) * 2 / 3) {
                     menu_pressed = 2;
                     score_index = 1;
                 }
@@ -436,16 +439,16 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
             case 1:
                 break;
             case 2: {
-                if (x >= 0 && x <= 118 &&
-                        y >= 0 && y <= 58) {
+                if (x >= 0 && x <= back_button1.getWidth() &&
+                        y >= 0 && y <= back_button1.getHeight()) {
                     score_pressed = 1;
                     back_index = 1;
                 }
                 break;
             }
             case 3: {
-                if (x >= 0 && x <= 118 &&
-                        y >= 0 && y <= 58) {
+                if (x >= 0 && x <= back_button1.getWidth() &&
+                        y >= 0 && y <= back_button1.getHeight()) {
                     end_pressed = 1;
                     back_index = 1;
                 }
@@ -456,6 +459,8 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        int y = e.getY();
+        int x = e.getX();
         switch (gameStatus) {
             case 0: {
                 switch (menu_pressed) {
@@ -464,13 +469,23 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                     case 1: {
                         menu_pressed = 0;
                         play_index = 0;
-                        gameStatus = 1;
+                        if (x >= (windowWidth - play_button1.getWidth()) / 2 &&
+                                x <= (windowWidth + play_button1.getWidth()) / 2 &&
+                                y >= (windowHeight - play_button1.getHeight()) / 2 &&
+                                y <= (windowHeight + play_button1.getHeight()) / 2) {
+                            gameStatus = 1;
+                        }
                         break;
                     }
                     case 2: {
                         menu_pressed = 0;
                         score_index = 0;
-                        gameStatus = 2;
+                        if (x >= (windowWidth - score_button1.getWidth()) / 2 &&
+                                x <= (windowWidth + score_button1.getWidth()) / 2 &&
+                                y >= (windowHeight - score_button1.getHeight()) * 2 / 3 &&
+                                y <= (windowHeight + score_button1.getHeight()) * 2 / 3) {
+                            gameStatus = 2;
+                        }
                         break;
                     }
                 }
@@ -485,7 +500,10 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                     case 1: {
                         score_pressed = 0;
                         back_index = 0;
-                        gameStatus = 0;
+                        if (x >= 0 && x <= back_button1.getWidth() &&
+                                y >= 0 && y <= back_button1.getHeight()) {
+                            gameStatus = 0;
+                        }
                         break;
                     }
                 }
@@ -497,7 +515,10 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                     case 1: {
                         end_pressed = 0;
                         back_index = 0;
-                        gameStatus = 0;
+                        if (x >= 0 && x <= back_button1.getWidth() &&
+                                y >= 0 && y <= back_button1.getHeight()) {
+                            gameStatus = 0;
+                        }
                         break;
                     }
                 }
@@ -517,8 +538,14 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
 
     public void menu() {
         scene.getGraphics().drawImage(menu_background.getImage(), 0, 0, windowWidth, windowHeight, null);
-        scene.getGraphics().drawImage(play_button[play_index].getImage(), (windowWidth - 118) / 2, (windowHeight - 58) / 2, null);
-        scene.getGraphics().drawImage(score_button[score_index].getImage(), (windowWidth - 118) / 2, (windowHeight - 58) * 3 / 4, null);
+        scene.getGraphics().drawImage(play_button[play_index].getImage(),
+                (windowWidth - play_button1.getWidth()) / 2,
+                (windowHeight - play_button1.getHeight()) / 2,
+                null);
+        scene.getGraphics().drawImage(score_button[score_index].getImage(),
+                (windowWidth - score_button1.getWidth()) / 2,
+                (windowHeight - score_button1.getHeight()) * 2 / 3,
+                null);
     }
 
     public void showHighScore() {
@@ -605,7 +632,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         } catch (IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
-        long timeSilent = 5;
+        long FPS = 120;
         while (true) {
             long startTime = System.currentTimeMillis();
             switch (gameStatus) {
@@ -632,7 +659,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
             myGame.draw();
             long endTime = System.currentTimeMillis();
             try {
-                Thread.sleep(Math.max(timeSilent + startTime - endTime, 0));
+                Thread.sleep((long)Math.max(1000.0 / FPS - (endTime - startTime), 0));
             } catch(InterruptedException e) {
                 System.out.println("Error");
             }

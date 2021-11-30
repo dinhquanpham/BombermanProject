@@ -212,6 +212,10 @@ public class Sprites {
 
     //Other
     public static Sprites menu_background = new Sprites("Data\\Sprites\\menu_background.png", 1600, 900);
-    public static Sprites play_button1 = new Sprites("Data\\Sprites\\play_button1.png", 118, 58);
-    public static Sprites play_button2 = new Sprites("Data\\Sprites\\play_button2.png", 118, 58);
+    public static Sprites play_button1 = new Sprites("Data\\Sprites\\play_button1.png", 160, 72);
+    public static Sprites play_button2 = new Sprites("Data\\Sprites\\play_button2.png", 160, 72);
+    public static Sprites score_button1 = new Sprites("Data\\Sprites\\score_button1.png", 192, 72);
+    public static Sprites score_button2 = new Sprites("Data\\Sprites\\score_button2.png", 192, 72);
+    public static Sprites back_button1 = new Sprites("Data\\Sprites\\score_button1.png", 192, 72);
+    public static Sprites back_button2 = new Sprites("Data\\Sprites\\score_button2.png", 192, 72);
 }
