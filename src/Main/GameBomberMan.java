@@ -339,6 +339,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (gameStatus != 1) return;
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             player.setRight(true);
         }
@@ -376,6 +377,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
 
     @Override
     public void keyReleased(KeyEvent e) {
+        if (gameStatus != 1) return;
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             player.setRight(false);
         }
@@ -399,8 +401,8 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
             score_button2
     };
     public static Sprites[] back_button = {
-            play_button1,
-            play_button2
+            back_button1,
+            back_button2
     };
     public static int menu_pressed = 0;
     public static int score_pressed = 0;
@@ -551,13 +553,14 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     public void showHighScore() {
         Collections.sort(scoreList);
         Collections.reverse(scoreList);
-        scene.getGraphics().drawImage(menu_background.getImage(), 0, 0, windowWidth, windowHeight, null);
+        scene.getGraphics().drawImage(highscore_background.getImage(), 0, 0, windowWidth, windowHeight, null);
         scene.getGraphics().drawImage(back_button[back_index].getImage(), 0, 0, null);
         textFiled.setColor(Color.black);
-        textFiled.drawString("High score: ", 400, 355);
         for (int i = 0; i < Math.min(scoreList.size(), 5); i++) {
-            if (scoreList.get(i) == 0)break;
-            textFiled.drawString(Integer.toString(scoreList.get(i)), 400, 400 + 35 * i);
+            if (scoreList.get(i) == 0) break;
+            textFiled.drawString(Integer.toString(i + 1) + ". " + Integer.toString(scoreList.get(i)),
+                    (windowWidth - 150) / 2,
+                    (windowHeight) * 2 / 5 + 55 * i);
         }
         // show high score
     }
@@ -567,8 +570,12 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         scene.getGraphics().drawImage(menu_background.getImage(), 0, 0, windowWidth, windowHeight, null);
         scene.getGraphics().drawImage(back_button[back_index].getImage(), 0, 0, null);
         textFiled.setColor(Color.black);
-        textFiled.drawString("Your score: ", 300, 455);
-        textFiled.drawString(Integer.toString(showScore), 525, 455);
+        textFiled.drawString("Your score: ",
+                (windowWidth - 200) / 2,
+                (windowHeight) / 2 + 30);
+        textFiled.drawString(Integer.toString(showScore),
+                (windowWidth - Integer.toString(showScore).length() * 20) / 2,
+                (windowHeight) * 2 / 3);
         if(endScore == -1)return;
         scoreList.add(showScore);
         File file =new File(System.getProperty("user.dir") + "\\Data\\Score\\score.txt");
@@ -603,7 +610,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         JFrame frame = new JFrame();
         frame.setTitle("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(true);
+        frame.setResizable(false);
         frame.setLocation(50, 50);
         frame.setSize(windowWidth, windowHeight);
 
