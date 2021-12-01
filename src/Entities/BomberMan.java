@@ -175,8 +175,8 @@ public class BomberMan extends Entities {
 
     public void resetBomberMan() {
         playerSpeed = 1;
-        playerBomb = 2;
-        playerFlame = 2;
+        playerBomb = 1;
+        playerFlame = 1;
         isDead = false;
         isEndDeadAnimation = false;
     }
