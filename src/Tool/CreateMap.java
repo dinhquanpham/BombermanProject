@@ -1,9 +1,7 @@
 package Tool;
 
-import Entities.Brick;
 import Entities.Entities;
 import Entities.Grass;
-import Entities.Wall;
 import static Graphics.Sprites.*;
 import static Main.GameBomberMan.*;
 import javax.swing.*;
@@ -12,6 +10,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class CreateMap extends JPanel implements KeyListener, MouseListener {
     public static char[][] exampleMap = new char[][]{
@@ -33,6 +35,29 @@ public class CreateMap extends JPanel implements KeyListener, MouseListener {
     };
 
     char materia = ' ';
+
+    public static void loadMap() throws FileNotFoundException {
+        String path = System.getProperty("user.dir") + "\\Data\\Maps\\draft.txt";
+        FileInputStream fileInputStream = new FileInputStream(path);
+        Scanner scanner = new Scanner(fileInputStream);
+        int curRow = 0;
+        try {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                for(int curColumn = 0; curColumn < line.length(); curColumn++) {
+                    exampleMap[curRow][curColumn] = line.charAt(curColumn);
+                }
+                curRow++;
+            }
+        } finally {
+            try {
+                scanner.close();
+                fileInputStream.close();
+            } catch (IOException ex) {
+                System.out.println("LOI DOC FILE");
+            }
+        }
+    }
 
     public void createMap() {
         for (int i = 0; i < R; i++) {
@@ -154,7 +179,7 @@ public class CreateMap extends JPanel implements KeyListener, MouseListener {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         JFrame frame = new JFrame();
         frame.setTitle("CreateMap");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -169,6 +194,7 @@ public class CreateMap extends JPanel implements KeyListener, MouseListener {
         frame.add(creator);
         frame.pack();
         frame.setVisible(true);
+        loadMap();
         while (true) {
             creator.createMap();
             creator.draw();

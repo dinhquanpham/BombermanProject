@@ -3,6 +3,7 @@ package Graphics;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -11,7 +12,8 @@ public class TextMap {
 
     public static int[][] map2 = new int[15][31];
     public static void loadLevel1() throws FileNotFoundException {
-        String path = System.getProperty("user.dir") + "\\Data\\Maps\\Level1.txt";
+        int rand = new Random().nextInt(4);
+        String path = System.getProperty("user.dir") + "\\Data\\Maps\\Level1_" + Integer.toString(rand) + ".txt";
         FileInputStream fileInputStream = new FileInputStream(path);
         Scanner scanner = new Scanner(fileInputStream);
         int curRow = 0;
@@ -74,7 +76,8 @@ public class TextMap {
         }
     }
     public static void loadLevel2() throws FileNotFoundException {
-        String path = System.getProperty("user.dir") + "\\Data\\Maps\\Level2.txt";
+        int rand = new Random().nextInt(4);
+        String path = System.getProperty("user.dir") + "\\Data\\Maps\\Level2_" + Integer.toString(rand) + ".txt";
         FileInputStream fileInputStream = new FileInputStream(path);
         Scanner scanner = new Scanner(fileInputStream);
         int curRow = 0;

@@ -18,8 +18,8 @@ public class BomberMan extends Entities {
     private int framePlayer = 0;
     private int intervalPlayer = 10;
     private int playerSpeed = 1;
-    private int playerBomb = 2;
-    private int playerFlame = 2;
+    private int playerBomb = 1;
+    private int playerFlame = 1;
     private boolean isDead, isEndDeadAnimation;
     private int deadTime;
     public static Sprites[] playerAnimationLeft = {

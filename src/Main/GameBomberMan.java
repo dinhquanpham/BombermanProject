@@ -131,7 +131,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
             }
             startTime = (int) System.currentTimeMillis();
             switchMap = false;
-            timeLeft = 180;
+            timeLeft = 300;
 
             player.setX(playerX);
             player.setY(playerY);
@@ -163,7 +163,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         textFiled.drawString("Time: ", 20, 755);
         textFiled.drawString(Integer.toString(timeLeft), 110, 755);
         int currentTime = (int) System.currentTimeMillis() - startTime;
-        timeLeft = 180 - currentTime / 1000;
+        timeLeft = 300 - currentTime / 1000;
         textFiled.drawString("Score: ", 400, 755);
         textFiled.drawString(Integer.toString(score), 525, 755);
         textFiled.drawString("Map: ", 800, 755);
@@ -614,7 +614,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         frame.setTitle("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setLocation(50, 50);
+        frame.setLocation(200, 100);
         frame.setSize(windowWidth, windowHeight);
 
         loadMapFromFile();
