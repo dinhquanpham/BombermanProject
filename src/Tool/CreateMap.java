@@ -39,6 +39,7 @@ public class CreateMap extends JPanel implements KeyListener, MouseListener {
             for (int j = 0; j < C; j++) {
                 Entities object;
                 object = new Grass(j * DEFAULT_SIZE, i * DEFAULT_SIZE, grass);
+                object.draw(scene.getGraphics());
                 if (exampleMap[i][j] == '#') {
                     object = new Grass(j * DEFAULT_SIZE, i * DEFAULT_SIZE, wall);
                 } else if (exampleMap[i][j] == '*') {
