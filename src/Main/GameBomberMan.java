@@ -587,6 +587,8 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         bw.write(Integer.toString(showScore) + "\n");
         endScore = -1;
         timeLeft = -1;
+        loadMapFromFile();
+        handleMap();
         bw.close();
         // show score
     }
@@ -637,11 +639,14 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         frame.add(myGame);
         frame.pack();
         frame.setVisible(true);
+
         try {
             mapSound.playSound(true);
         } catch (IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
+
+
         long FPS = 120;
         while (true) {
             long startTime = System.currentTimeMillis();
