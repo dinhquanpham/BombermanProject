@@ -15,7 +15,7 @@ import static Sound.Sound.explodedBombSound;
 public class Bomb extends Entities {
     boolean exploded, checked;
 
-    private int plantedTime;
+    private long plantedTime;
     private final int plantedTiming = 3000;
     private int indexAnimationBomb = 0;
     public static Sprites[] bombAnimation = {
@@ -36,11 +36,8 @@ public class Bomb extends Entities {
         this.exploded = exploded;
     }
 
-    public int getPlantedTime() {
-        return plantedTime;
-    }
 
-    public void setPlantedTime(int plantedTime) {
+    public void setPlantedTime(long plantedTime) {
         this.plantedTime = plantedTime;
     }
 
@@ -70,12 +67,12 @@ public class Bomb extends Entities {
         if (exploded) {
             return;
         }
-        int existTime = (int) System.currentTimeMillis() - plantedTime;
-        int cycle = existTime / 200;
+        long existTime = System.currentTimeMillis() - plantedTime;
+        long cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
-            indexAnimationBomb = cycle % 3;
+            indexAnimationBomb = (int) (cycle % 3);
         } else {
-            indexAnimationBomb = 2 - cycle % 3;
+            indexAnimationBomb = (int) (2 - cycle % 3);
         }
         currentSprite = bombAnimation[indexAnimationBomb];
         boolean xOverlaps = (x < player.getX() + DEFAULT_SIZE) && (x + DEFAULT_SIZE > player.getX());

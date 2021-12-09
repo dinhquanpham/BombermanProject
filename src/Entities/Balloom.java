@@ -25,7 +25,8 @@ public class Balloom extends Entities {
     private int dx[] = {0, -1, 0, 1, 0};
     private int dy[] = {-1, 0, 1, 0, 0};
     private boolean isDead, isEndAnimation;
-    private int deadTime, getScore = 100;
+    private int getScore = 100;
+    private long deadTime;
 
     public static Sprites[] balloomAnimationLeft = {
             balloom_left1,
@@ -52,11 +53,10 @@ public class Balloom extends Entities {
 
     public void draw(Graphics g) {
         if (!isDead) {
-
             g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
                     Sprites.DEFAULT_SIZE, null);
         } else {
-            int existTime = (int) System.currentTimeMillis() - deadTime;
+            int existTime = (int) (System.currentTimeMillis() - deadTime);
             if (existTime < 300) {
                 g.drawString("100", x + DEFAULT_SIZE / 2, y + DEFAULT_SIZE / 2);
                 g.drawImage(balloomAnimationDead[existTime / 100].getImage(), x, y, Sprites.DEFAULT_SIZE,
@@ -152,12 +152,12 @@ public class Balloom extends Entities {
 
         x += dx[indexDirection] * balloomSpeed;
         y += dy[indexDirection] * balloomSpeed;
-        int existTime = (int) System.currentTimeMillis();
-        int cycle = existTime / 200;
+        long existTime =  System.currentTimeMillis();
+        long cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
-            indexAnimationBalloom = cycle % 3;
+            indexAnimationBalloom = (int) (cycle % 3);
         } else {
-            indexAnimationBalloom = 2 - cycle % 3;
+            indexAnimationBalloom = 2 - (int) (cycle % 3);
         }
         if (indexDirection == 4);
         else if (indexDirection == 0 || indexDirection == 3) currentSprite = balloomAnimationRight[indexAnimationBalloom];
@@ -200,7 +200,7 @@ public class Balloom extends Entities {
                 }
             }
             if (isDead) {
-                deadTime = (int) System.currentTimeMillis();
+                deadTime = System.currentTimeMillis();
                 try {
                     mobDiedSound.playSound(false);
                 } catch (IOException | LineUnavailableException ex) {

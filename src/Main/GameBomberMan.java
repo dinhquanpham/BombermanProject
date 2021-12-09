@@ -34,7 +34,11 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
     public static BufferedImage scene = new BufferedImage(windowWidth, windowHeight, BufferedImage.TYPE_INT_RGB);
     public static Font textFont;
     public static Graphics textFiled = scene.getGraphics();
-    public static int startTime, timeLeft = -1, score = 0, endScore = 0, showScore;
+    public static long timeLeft = -1;
+    public static int score = 0;
+    public static int endScore = 0;
+    public static int showScore;
+    public static long startTime;
 
     //map
     public static int [][] map = new int[R][C];
@@ -126,10 +130,10 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                 gameStatus = 3;
                 currentMap = 1;
             }
-            if (!switchMap) {
+            if (!switchMap || currentMap == 1) {
                 score = 0;
             }
-            startTime = (int) System.currentTimeMillis();
+            startTime = System.currentTimeMillis();
             switchMap = false;
             timeLeft = 300;
 
@@ -161,13 +165,13 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         textFiled.setColor(Color.white);
         textFiled.clearRect(0, 725, windowWidth, windowHeight);
         textFiled.drawString("Time: ", 20, 755);
-        textFiled.drawString(Integer.toString(timeLeft), 110, 755);
-        int currentTime = (int) System.currentTimeMillis() - startTime;
+        textFiled.drawString(Long.toString(timeLeft), 110, 755);
+        long currentTime = System.currentTimeMillis() - startTime;
         timeLeft = 300 - currentTime / 1000;
         textFiled.drawString("Score: ", 400, 755);
-        textFiled.drawString(Integer.toString(score), 525, 755);
+        textFiled.drawString(Long.toString(score), 525, 755);
         textFiled.drawString("Map: ", 800, 755);
-        textFiled.drawString(Integer.toString(currentMap), 880, 755);
+        textFiled.drawString(Long.toString(currentMap), 880, 755);
     }
 
     public void draw() {
@@ -275,7 +279,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                 if (bombLists.get(i).isExploded()) {
                     if (!bombLists.get(i).isChecked()) {
                         bombLists.get(i).setChecked(true);
-                        flameLists.get(i).setExplodedTime((int) System.currentTimeMillis());
+                        flameLists.get(i).setExplodedTime((long) System.currentTimeMillis());
                         flameLists.get(i).setFlaming(true);
                         flameLists.get(i).check();
                     }
@@ -287,7 +291,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                         bombLists.get(j).collide(flameLists.get(i));
                         if (bombLists.get(j).isExploded()) {
                             bombLists.get(j).setChecked(true);
-                            flameLists.get(j).setExplodedTime((int) System.currentTimeMillis());
+                            flameLists.get(j).setExplodedTime((long) System.currentTimeMillis());
                             flameLists.get(j).setFlaming(true);
                             flameLists.get(j).check();
                         }
@@ -299,7 +303,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                             bombLists.get(i).collide(flameLists.get(j));
                             if (bombLists.get(i).isExploded() && !bombLists.get(i).isChecked()) {
                                 bombLists.get(i).setChecked(true);
-                                flameLists.get(i).setExplodedTime((int) System.currentTimeMillis());
+                                flameLists.get(i).setExplodedTime((long) System.currentTimeMillis());
                                 flameLists.get(i).setFlaming(true);
                                 flameLists.get(i).check();
                                 break;
@@ -368,7 +372,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
             bombX *= DEFAULT_SIZE;
             bombY *= DEFAULT_SIZE;
             Bomb newBomb = new Bomb(bombX, bombY, bomb);
-            newBomb.setPlantedTime((int)System.currentTimeMillis());
+            newBomb.setPlantedTime(System.currentTimeMillis());
             bombLists.add(newBomb);
             Flame newFlame = new Flame(bombX, bombY, bomb_exploded);
             newFlame.setSizeFlames(player.getPlayerFlame());
@@ -477,7 +481,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                                 y >= (windowHeight - play_button1.getHeight()) / 2 &&
                                 y <= (windowHeight + play_button1.getHeight()) / 2) {
                             gameStatus = 1;
-                            startTime = (int) System.currentTimeMillis();
+                            startTime = (long) System.currentTimeMillis();
                         }
                         break;
                     }
@@ -580,7 +584,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
                 (windowHeight) * 2 / 3);
         if(endScore == -1)return;
         scoreList.add(showScore);
-        File file =new File(System.getProperty("user.dir") + "\\Data\\Score\\score.txt");
+        File file = new File(System.getProperty("user.dir") + "\\Data\\Score\\score.txt");
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
@@ -616,7 +620,7 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         frame.setTitle("Bomberman");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setLocation(200, 100);
+        frame.setLocation(25, 25);
         frame.setSize(windowWidth, windowHeight);
 
         loadMapFromFile();
@@ -645,7 +649,6 @@ public class GameBomberMan extends JPanel implements KeyListener, MouseListener 
         } catch (IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
-
 
         long FPS = 120;
         while (true) {

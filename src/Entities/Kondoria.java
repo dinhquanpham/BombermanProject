@@ -25,7 +25,8 @@ public class Kondoria extends Entities {
     private int dx[] = {0, -1, 0, 1, 0};
     private int dy[] = {-1, 0, 1, 0, 0};
     private boolean isDead, isEndAnimation;
-    private int deadTime, getScore = 500;
+    private int getScore = 500;
+    private long deadTime;
 
     public static Sprites[] kondoriaAnimationLeft = {
             kondoria_left1,
@@ -55,7 +56,7 @@ public class Kondoria extends Entities {
             g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
                     Sprites.DEFAULT_SIZE, null);
         } else {
-            int existTime = (int) System.currentTimeMillis() - deadTime;
+            int existTime = (int) (System.currentTimeMillis() - deadTime);
             if (existTime < 300) {
                 g.drawString("500", x + DEFAULT_SIZE / 2, y + DEFAULT_SIZE / 2);
                 g.drawImage(kondoriaAnimationDead[existTime / 100].getImage(), x, y, Sprites.DEFAULT_SIZE,
@@ -147,12 +148,12 @@ public class Kondoria extends Entities {
 
         x += dx[indexDirection] * kondoriaSpeed;
         y += dy[indexDirection] * kondoriaSpeed;
-        int existTime = (int) System.currentTimeMillis();
-        int cycle = existTime / 200;
+        long existTime = System.currentTimeMillis();
+        long cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
-            indexAnimationKondoria = cycle % 3;
+            indexAnimationKondoria = (int) (cycle % 3);
         } else {
-            indexAnimationKondoria = 2 - cycle % 3;
+            indexAnimationKondoria = (int) (2 - cycle % 3);
         }
         if (indexDirection == 4);
         else if (indexDirection == 0 || indexDirection == 3) currentSprite = kondoriaAnimationRight[indexAnimationKondoria];
@@ -195,7 +196,7 @@ public class Kondoria extends Entities {
                 }
             }
             if (isDead) {
-                deadTime = (int) System.currentTimeMillis();
+                deadTime = System.currentTimeMillis();
                 try {
                     mobDiedSound.playSound(false);
                 } catch (IOException | LineUnavailableException ex) {

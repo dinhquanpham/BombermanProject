@@ -7,7 +7,7 @@ import static Graphics.Sprites.*;
 
 public class Brick extends Entities {
     private boolean isDestroyed = false;
-    private int collidedTime;
+    private long collidedTime;
     public static Sprites[] brickAnimation = {
             brick_exploded,
             brick_exploded1,
@@ -25,13 +25,6 @@ public class Brick extends Entities {
         isDestroyed = destroyed;
     }
 
-    public int getCollidedTime() {
-        return collidedTime;
-    }
-
-    public void setCollidedTime(int collidedTime) {
-        this.collidedTime = collidedTime;
-    }
 
     @Override
     public void draw(Graphics g) {
@@ -40,7 +33,7 @@ public class Brick extends Entities {
                     Sprites.DEFAULT_SIZE, null);
         }
         else {
-            int existTime = (int) System.currentTimeMillis() - collidedTime;
+            int existTime = (int) (System.currentTimeMillis() - collidedTime);
             if (existTime < 300) {
                 g.drawImage(grass.getImage(), x, y, Sprites.DEFAULT_SIZE,
                         Sprites.DEFAULT_SIZE, null);
@@ -68,7 +61,7 @@ public class Brick extends Entities {
                     || (rightBrick == 0 && leftBrick == 0 && upBrick == flame.getUp())
                     || (rightBrick == 0 && leftBrick == 0 && downBrick == flame.getDown())) {
                 this.setDestroyed(true);
-                collidedTime = (int) System.currentTimeMillis();
+                collidedTime = System.currentTimeMillis();
             }
         }
     }

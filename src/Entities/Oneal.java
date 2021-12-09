@@ -25,7 +25,8 @@ public class Oneal extends Entities {
     private int dx[] = {0, -1, 0, 1, 0};
     private int dy[] = {-1, 0, 1, 0, 0};
     private boolean isDead, isEndAnimation;
-    private int deadTime, getScore = 200;
+    private int getScore = 200;
+    private long deadTime;
 
     public static Sprites[] onealAnimationLeft = {
             oneal_left1,
@@ -56,7 +57,7 @@ public class Oneal extends Entities {
             g.drawImage(currentSprite.getImage(), x, y, Sprites.DEFAULT_SIZE,
                     Sprites.DEFAULT_SIZE, null);
         } else {
-            int existTime = (int) System.currentTimeMillis() - deadTime;
+            int existTime = (int) (System.currentTimeMillis() - deadTime);
             if (existTime < 300) {
                 g.drawString("200", x + DEFAULT_SIZE / 2, y + DEFAULT_SIZE / 2);
                 g.drawImage(onealAnimationDead[existTime / 100].getImage(), x, y, Sprites.DEFAULT_SIZE,
@@ -158,12 +159,12 @@ public class Oneal extends Entities {
             x += dx[indexDirection] * onealSpeed;
             y += dy[indexDirection] * onealSpeed;
         }
-        int existTime = (int) System.currentTimeMillis();
-        int cycle = existTime / 200;
+        long existTime =  System.currentTimeMillis();
+        long cycle = existTime / 200;
         if ((cycle / 3) % 2 == 0) {
-            indexAnimationOneal = cycle % 3;
+            indexAnimationOneal = (int) (cycle % 3);
         } else {
-            indexAnimationOneal = 2 - cycle % 3;
+            indexAnimationOneal = 2 - (int) (cycle % 3);
         }
         if (indexDirection == 4);
         else if (indexDirection == 0 || indexDirection == 3) currentSprite = onealAnimationRight[indexAnimationOneal];
@@ -206,7 +207,7 @@ public class Oneal extends Entities {
                 }
             }
             if (isDead) {
-                deadTime = (int) System.currentTimeMillis();
+                deadTime = System.currentTimeMillis();
                 try {
                     mobDiedSound.playSound(false);
                 } catch (IOException | LineUnavailableException ex) {

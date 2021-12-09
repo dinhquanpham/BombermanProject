@@ -10,7 +10,7 @@ import static Main.GameBomberMan.map;
 public class Flame extends Entities{
     private boolean flaming, endFlame;
     private boolean blockUp, blockDown, blockLeft, blockRight;
-    private int explodedTime;
+    private long explodedTime;
     private final int explodedTiming = 300;
     private int indexAnimationFlames = 0;
     private int sizeFlames = 1;
@@ -73,11 +73,11 @@ public class Flame extends Entities{
         this.endFlame = endFlame;
     }
 
-    public int getExplodedTime() {
+    public long getExplodedTime() {
         return explodedTime;
     }
 
-    public void setExplodedTime(int explodedTime) {
+    public void setExplodedTime(long explodedTime) {
         this.explodedTime = explodedTime;
     }
 
@@ -189,23 +189,6 @@ public class Flame extends Entities{
 
     @Override
     public void collide(Object e) {
-        /**
-         if (e instanceof Flame) {
-         Flame flame = (Flame) e;
-         int topFlame = (flame.getY() - y) / DEFAULT_SIZE;
-         int downFlame = (y - flame.getY()) / DEFAULT_SIZE;
-         int leftFlame = (flame.getX() - x) / DEFAULT_SIZE;
-         int rightFlame = (x - flame.getX()) / DEFAULT_SIZE;
-         if (topFlame == 0 && downFlame == 0) {
-         if (rightFlame <= flame.getRight())right = rightFlame;
-         if (leftFlame <= flame.getLeft())left = leftFlame;
-         }
-         if (rightFlame == 0 && leftFlame == 0) {
-         if (topFlame <= flame.getTop())top = topFlame;
-         if (downFlame <= flame.getDown())down = downFlame;
-         }
-         }
-         **/
     }
 
     public void check() {
@@ -280,12 +263,12 @@ public class Flame extends Entities{
     }
 
     public void handleFlame() {
-        int existTime = (int) System.currentTimeMillis() - explodedTime;
-        int cycle = existTime / 50;
+        long existTime = System.currentTimeMillis() - explodedTime;
+        long cycle = existTime / 50;
         if ((cycle / 3) % 2 == 0) {
-            indexAnimationFlames = cycle % 3;
+            indexAnimationFlames = (int) (cycle % 3);
         } else {
-            indexAnimationFlames = 2 - cycle % 3;
+            indexAnimationFlames = (int) (2 - cycle % 3);
         }
         if (existTime > explodedTiming) {
             endFlame = true;
